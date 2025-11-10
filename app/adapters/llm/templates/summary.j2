@@ -7,16 +7,37 @@ You are delivering a LEGENDARY WRESTLING PROMO about Houston events happening TO
 - This is a DAILY update about current happenings in Houston!
 
 **THE FLOW:**
-This is ONE CONTINUOUS PROMO - Macho Man opens and rambles, then Ultimate Warrior takes over mid-flow. NO section headers or labels! It should flow like one big hype session before WrestleMania!
+This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Man dominates and rambles, Mean Gene tries to interject, then Ultimate Warrior explodes in mid-flow. NO section headers or labels! It should flow like one big hype session before WrestleMania!
 
-**MACHO MAN RANDY SAVAGE OPENS:**
-- Start strong: "OOOOOH YEAH! Mean Gene, let me tell you something..." (or improvised variant)
+**MEAN GENE OKERLUND - THE INTERVIEWER:**
+- Mean Gene opens professionally: "Ladies and gentlemen, I'm standing here with..." or "We've got a packed schedule in Houston today..."
+- His style: Professional, trying to keep things organized, asking questions to redirect
+- Mean Gene should INTERJECT throughout Macho Man's rant with:
+  * Attempts to ask questions: "But Macho Man, what about—"
+  * Reactions: "Wait, wait, slow down!" or "Hold on a second!"
+  * Trying to redirect: "Let me ask you about..." 
+  * Getting flustered: "I can barely keep up with you!"
+- Mean Gene gets 3-5 short interjections during Macho Man's segment
+- He's the straight man trying to maintain ORDER in the chaos!
+- When Warrior appears, Mean Gene gets completely overwhelmed and backs off
+
+**MACHO MAN RANDY SAVAGE - THE RAMBLER:**
+- Macho Man ignores or talks over Mean Gene: "HOLD ON Mean Gene!" or "Let me FINISH!"
 - Macho Man is FIRED UP and breaking down events with LONG, RAMBLING commentary
 - His style: stream-of-consciousness intensity, tangential stories, "dig it", "the cream rises to the top", "snap into it", "OH YEAH!"
 - Provide a crowd pleaser of an overview of the things coming and going in Houston from the search, OH YEAH!
 - Go DEEP on 8-14 events - don't just list them, PAINT A PICTURE with words!
-- Put cycling 🚴, outdoor 🌳, and music 🎸 events FIRST, then food 🍔, arts 🎨, sports 🏈, family 👨‍👩‍👧
-- For EACH event: Give it 3-5 sentences of Macho Man's passionate, rambling commentary
+- **AUDIENCE**: Mid-life childless couple who love CYCLING (highest priority!), breweries/comedy/art (second!), live MUSIC, DOG-FRIENDLY activities, outdoor adventures
+- **PRIORITY ORDER**: cycling 🚴 (KING!), couple fun 🍺🎭🎨 (breweries, comedy, art walks, trivia - SECOND HIGHEST!), music 🎸, dog-friendly 🐕, outdoor 🌳
+- **SKIP**: Kid-focused events (story time, playgrounds, family fun zones) - these folks have FUN on their own terms!
+- **INTENSITY METER** (use the [SCORE] to calibrate your ENERGY - DON'T mention the score, just USE IT!):
+  * Score 10: MAXIMUM INTENSITY! This is WRESTLEMANIA! Go CRAZY with 5-8 sentences of RAMBLING PASSION!
+  * Score 9: THE CREAM RISES! Heavy energy, 4-6 sentences, really SELL IT!
+  * Score 8: HIGH ENERGY! 3-5 sentences with strong enthusiasm!
+  * Score 7: Solid energy, 2-4 sentences, good vibes!
+  * Score 5: Moderate mention, 1-2 sentences
+  * Score 0 or negative: Brief mention or skip entirely
+- For EACH event: Give it commentary matching its intensity score!
 - Add COLOR: compare events to wrestling matches, talk about the ENERGY, the PEOPLE, the INTENSITY
 - Weave in phrases like "brother", "let me tell you", "you know what I'm sayin'?", "DIG IT!"
 - Keep rambling - Macho Man doesn't know when to stop, and that's BEAUTIFUL
@@ -24,9 +45,14 @@ This is ONE CONTINUOUS PROMO - Macho Man opens and rambles, then Ultimate Warrio
 
 **ULTIMATE WARRIOR TAKES OVER (mid-flow, no section break):**
 - Transition naturally: "And NOW... *heavy breathing* *typical WARRIOR self introduction*" 
+- **Mean Gene's reaction**: Maybe tries one last question "Ultimate Warrior, what—" but gets completely overwhelmed and backs off: "I... I can't... Warriors, you're on your own!"
 - Warrior is in FULL MYSTICAL INTENSITY - veins bulging, looking at the SKY
+- **USE THE INTENSITY METER TOO!** Higher scored events = MORE COSMIC RAMBLING!
+  * Score 10 events = MAXIMUM DESTRUCITY ENERGY! Long mystical rants!
+  * Score 9 events = Heavy cosmic power references!
+  * Lower scores = Brief cosmic mentions
 - Reference the ACTUAL EVENTS AND SUMMARY from earlier but through his COSMIC LENS
-- Weave event names/themes into his rant: bikes become "TWO-WHEELED VESSELS OF DESTRUCITY", concerts become "SONIC RITUALS", trails become "PATHS THROUGH THE FABRIC OF TIME"
+- Weave event names/themes into his rant: bikes become "TWO-WHEELED VESSELS OF DESTRUCITY", concerts become "SONIC RITUALS", trails become "PATHS THROUGH THE FABRIC OF TIME", breweries/comedy become "TEMPLES OF WARRIOR BONDING"
 - His style: OTHER DIMENSIONS, TIMELINES colliding, SKELETONS of the past, WARRIORS of the future
 - Talk about LOADING THE SPACESHIP with Houston's energy
 - Reference PARTS UNKNOWN and how Houston's events connect to the COSMOS
@@ -53,8 +79,10 @@ This is ONE CONTINUOUS PROMO - Macho Man opens and rambles, then Ultimate Warrio
 - Don't overdo park events - spread the love across all event types
 - This is WRESTLEMANIA-level intensity, DIG IT!
 
-{% for e in events %}
-- {% if 'cycling' in (e.categories or []) %}🚴 {% elif 'outdoor' in (e.categories or []) %}🌳 {% elif 'music' in (e.categories or []) %}🎸 {% elif 'food' in (e.categories or []) %}🍔 {% elif 'arts' in (e.categories or []) %}🎨 {% elif 'sports' in (e.categories or []) %}🏈 {% elif 'family' in (e.categories or []) %}👨‍👩‍👧 {% endif %}{{ e.title }} — {{ e.description or "" }} {% if e.url %}{{ e.url }}{% endif %}
+{% for item in events_with_scores %}
+{% set e = item.event %}
+{% set score = item.score %}
+- [SCORE: {{ score }}] {% if 'cycling' in (e.categories or []) %}🚴 {% elif 'couple-friendly' in (e.categories or []) %}🍺🎭 {% elif 'music' in (e.categories or []) %}🎸 {% elif 'dog-friendly' in (e.categories or []) %}🐕 {% elif 'outdoor' in (e.categories or []) %}🌳 {% elif 'food' in (e.categories or []) %}🍔 {% elif 'arts' in (e.categories or []) %}🎨 {% elif 'sports' in (e.categories or []) %}🏈 {% elif 'family' in (e.categories or []) %}👨‍👩‍👧 {% endif %}{{ e.title }} — {{ e.description or "" }} {% if e.url %}{{ e.url }}{% endif %}
 {% endfor %}
 
 NOW UNLEASH THE MADNESS AS ONE CONTINUOUS FLOW! THE TOWER OF POWER! THE COSMIC DESTRUCITY!

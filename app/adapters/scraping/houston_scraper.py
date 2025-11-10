@@ -6,16 +6,27 @@ from app.core.ports.scraper_port import ScraperPort
 from app.adapters.scraping.event_api_aggregator import EventAPIAggregator
 
 HINT_SITES = [
+    # Outdoor & Parks
     ("https://www.discoverygreen.com/events", "Discovery Green"),
     ("https://buffalobayou.org/event/", "Buffalo Bayou"),
     ("https://www.houstonparks.org/", "Houston Parks Board"),
-    ("https://www.bikehouston.org/events/", "BikeHouston"),
     ("https://www.houstontx.gov/parks/events.html", "Houston Parks & Recreation"),
     ("https://www.visithoustontexas.com/events/", "Visit Houston"),
+    
+    # Cycling
+    ("https://www.bikehouston.org/events/", "BikeHouston"),
+    
+    # Music Venues
     ("https://www.whiteoakmusichall.com", "White Oak Music Hall"),
     ("https://www.houseofblues.com/houston/shows", "House of Blues Houston"),
     ("https://www.milleroutdoortheatre.com/schedule/", "Miller Outdoor Theatre"),
     ("https://713musichall.com/shows/", "713 Music Hall"),
+    
+    # Comedy & Entertainment
+    ("https://improvhouston.com/events/", "Houston Improv"),
+    
+    # Dog-Friendly
+    ("https://www.bringfido.com/attraction/city/houston_tx_us/", "BringFido Houston"),
 ]
 
 def _parse_events_from_html(html: str, source_name: str) -> List[Event]:
@@ -28,12 +39,26 @@ def _parse_events_from_html(html: str, source_name: str) -> List[Event]:
             # Auto-categorize based on keywords
             categories = []
             title_lower = title.lower()
+            
+            # Cycling (HIGHEST priority!)
             if any(word in title_lower for word in ["bike", "cycling", "cycle", "ride", "pedal", "cyclist"]):
                 categories.append("cycling")
-            if any(word in title_lower for word in ["hike", "trail", "park", "outdoor", "nature", "kayak", "run", "walk"]):
-                categories.append("outdoor")
+            
+            # Music
             if any(word in title_lower for word in ["concert", "music", "band", "show", "live music", "performance", "symphony", "jazz", "rock", "hip hop", "dj"]):
                 categories.append("music")
+            
+            # Dog-friendly
+            if any(word in title_lower for word in ["dog", "dog-friendly", "pet", "pet-friendly", "pup", "canine", "bark", "dogs welcome"]):
+                categories.append("dog-friendly")
+            
+            # Couple activities
+            if any(word in title_lower for word in ["wine", "brewery", "beer", "cocktail", "tasting", "comedy", "trivia", "art walk", "gallery", "date night"]):
+                categories.append("couple-friendly")
+            
+            # Outdoor
+            if any(word in title_lower for word in ["hike", "trail", "park", "outdoor", "nature", "kayak", "run", "walk", "paddle"]):
+                categories.append("outdoor")
             
             events.append(Event(
                 title=title[:200], 
