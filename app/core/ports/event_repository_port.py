@@ -1,0 +1,6 @@
+from typing import List, Protocol
+from app.core.domain.models import Event
+
+class EventRepositoryPort(Protocol):
+    async def save_events(self, events: List[Event]) -> None: ...
+    async def get_latest_events(self, limit: int = 20) -> List[Event]: ...

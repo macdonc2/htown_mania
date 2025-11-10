@@ -1,0 +1,10 @@
+image:
+  repository: ghcr.io/yourorg/houston-event-mania
+  tag: latest
+  pullPolicy: IfNotPresent
+envFromSecret: houston-event-mania-secrets
+ingress:
+  enabled: true
+  className: nginx
+  host: events.macdoncml.com
+  tlsSecret: events-mania-tls

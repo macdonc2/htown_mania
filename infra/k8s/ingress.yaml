@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: houston-event-mania
+  namespace: houston-events
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dns
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [ "events.macdoncml.com" ]
+      secretName: events-mania-tls
+  rules:
+    - host: events.macdoncml.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: houston-event-mania
+                port:
+                  number: 80

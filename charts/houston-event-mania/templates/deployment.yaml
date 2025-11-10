@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: houston-event-mania
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: houston-event-mania }
+  template:
+    metadata:
+      labels: { app: houston-event-mania }
+    spec:
+      containers:
+        - name: web
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy | default "IfNotPresent" }}"
+          ports: [{ containerPort: 8000 }]
+          envFrom:
+            - secretRef:
+                name: "{{ .Values.envFromSecret }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: houston-event-mania
+spec:
+  selector: { app: houston-event-mania }
+  ports: [{ name: http, port: 80, targetPort: 8000 }]

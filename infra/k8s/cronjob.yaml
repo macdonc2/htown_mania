@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: houston-event-mania-daily
+  namespace: houston-events
+spec:
+  schedule: "0 7 * * *"
+  timeZone: "America/Chicago"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: worker
+              image: htownmaniaacr.azurecr.io/houston-event-mania:latest
+              command: ["python", "-m", "app.workers.run_daily_job"]
+              envFrom:
+                - secretRef:
+                    name: houston-event-mania-secrets

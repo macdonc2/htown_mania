@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" class="bg-zinc-950 text-zinc-100">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Houston Event Mania</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="icon" href="/static/favicon.svg" />
+
+  <!-- THEME TOKENS + ANIMATIONS -->
+  <style>
+    :root{
+      --c1:#ec4899; --c2:#22d3ee; --c3:#a855f7; --bg:#0a0a0a;
+    }
+    .theme-macho  { --c1:#f59e0b; --c2:#ef4444; --c3:#fde047; }
+    .theme-warrior{ --c1:#22d3ee; --c2:#a3e635; --c3:#a855f7; }
+    .theme-vapor  { --c1:#ec4899; --c2:#22d3ee; --c3:#a855f7; }
+
+    .neon { text-shadow: 0 0 10px var(--c1), 0 0 20px var(--c2), 0 0 40px var(--c3); }
+    .glow-border { box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 0 20px rgba(168,85,247,.15); }
+
+    .grad-anim {
+      background: radial-gradient(1200px 400px at 10% -20%, rgba(236,72,153,.15), transparent),
+                  radial-gradient(1200px 400px at 90% 120%, rgba(34,211,238,.12), transparent);
+      animation: drift 9s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from{ filter:hue-rotate(0deg)} to{ filter:hue-rotate(30deg)} }
+
+    .mania { animation: mania 1.2s ease-in-out infinite alternate; }
+    @keyframes mania { from { filter: hue-rotate(0deg) } to { filter: hue-rotate(90deg) } }
+  </style>
+</head>
+
+<!-- IMPORTANT: start with theme-vapor so we have a base class to toggle from -->
+<body class="min-h-screen grad-anim theme-vapor">
+  <!-- Header -->
+  <header class="sticky top-0 z-10 bg-zinc-950/70 backdrop-blur border-b border-zinc-800">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <h1 id="logo" class="text-2xl md:text-3xl font-black neon tracking-wide">HOUSTON EVENT MANIA</h1>
+      <nav class="flex items-center gap-2 text-sm">
+        <button id="themeBtn" class="px-3 py-1 rounded-lg border border-zinc-700 hover:bg-zinc-800">
+          🎨 Theme: <span id="themeLbl">Vaporwave</span>
+        </button>
+        <a href="/" class="px-3 py-1 rounded-lg border border-zinc-700 hover:bg-zinc-800">Home</a>
+        <a href="/neon/" class="px-3 py-1 rounded-lg border border-zinc-700 hover:bg-zinc-800">Neon</a>
+        <a href="/events/latest" class="px-3 py-1 rounded-lg border border-zinc-700 hover:bg-zinc-800">API</a>
+        <a href="/auth/login" class="px-3 py-1 rounded-lg border border-zinc-700 hover:bg-zinc-800">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page -->
+  <main class="max-w-5xl mx-auto px-4 py-6">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FAB -->
+  <button id="fab"
+          class="fixed bottom-6 right-6 rounded-full px-5 py-3 bg-gradient-to-r from-pink-600 to-cyan-500 text-white font-semibold shadow-lg hover:scale-105 active:scale-95 transition glow-border"
+          title="Tap: More Events • Long-press: MANIA MODE">
+    ✨ More Events
+  </button>
+
+  <!-- THEME + FAB JS -->
+  <script>
+    // --- Theme cycler ---
+    (function(){
+      const body = document.body;
+      const lbl = document.getElementById('themeLbl');
+      const btn = document.getElementById('themeBtn');
+      if (!btn || !lbl) return; // safety if template differs
+
+      const themes = [
+        ['theme-vapor','Vaporwave'],
+        ['theme-macho','Macho Madness'],
+        ['theme-warrior','Ultimate Warrior'],
+      ];
+
+      let i = (['theme-macho','theme-warrior'].some(c=>body.classList.contains(c))) ? 1 : 0;
+      function apply(idx){
+        body.classList.remove('theme-vapor','theme-macho','theme-warrior');
+        body.classList.add(themes[idx][0]);
+        lbl.textContent = themes[idx][1];
+      }
+      apply(i);
+      btn.addEventListener('click', (e)=>{ e.preventDefault(); i=(i+1)%themes.length; apply(i); });
+      // expose for quick debugging in console:
+      window.__hemApplyTheme = apply;
+    })();
+
+    // --- FAB: tap loads more with filters ---
+    document.getElementById('fab')?.addEventListener('click', () => {
+      const target = document.getElementById('events-container');
+      if (!target) return;
+      const q = document.getElementById('q')?.value || '';
+      const cycling = document.getElementById('tag-cycling')?.checked ? 'tags=cycling&' : '';
+      const outdoor = document.getElementById('tag-outdoor')?.checked ? 'tags=outdoor&' : '';
+      target.setAttribute('hx-get', `/events/partial?${cycling}${outdoor}q=${encodeURIComponent(q)}&limit=80`);
+      htmx.trigger(target, 'refresh');
+    });
+
+    // --- Long-press: MANIA MODE + tiny synth sting ---
+    (function() {
+      const fab = document.getElementById('fab');
+      const logo = document.getElementById('logo');
+      if (!fab) return;
+      let timer; const hold = 650;
+      const start = () => { timer = setTimeout(() => {
+        document.body.classList.toggle('mania');
+        logo?.classList.toggle('neon');
+        fab.textContent = document.body.classList.contains('mania') ? '🌈 MANIA MODE' : '✨ More Events';
+        try {
+          const ctx = new AudioContext(); const o = ctx.createOscillator(); const g = ctx.createGain();
+          o.type = 'sawtooth'; o.frequency.value = 196; g.gain.value = 0.0015;
+          o.connect(g).connect(ctx.destination); o.start(); setTimeout(()=>o.stop(), 250);
+        } catch {}
+      }, hold); };
+      const clear = () => clearTimeout(timer);
+      ['mousedown','touchstart'].forEach(ev => fab.addEventListener(ev, start));
+      ['mouseup','mouseleave','touchend','touchcancel'].forEach(ev => fab.addEventListener(ev, clear));
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mb-6 p-5 rounded-2xl border border-zinc-800 bg-zinc-900/40 glow-border">
+  <div class="flex flex-col md:flex-row md:items-end gap-4">
+    <div class="flex-1">
+      <h2 class="text-2xl font-extrabold neon">Today & This Week</h2>
+      <p class="text-zinc-400">Houston highlights — cycling 🚴 & outdoor 🌳 first.</p>
+    </div>
+    <form id="filters" class="flex flex-wrap items-center gap-3"
+          hx-get="/events/partial"
+          hx-target="#events-container"
+          hx-swap="innerHTML">
+      <input id="q" name="q" type="search" placeholder="Search events…"
+             class="px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 w-56">
+      <label class="flex items-center gap-2 px-3 py-2 rounded-xl border border-zinc-700 cursor-pointer hover:bg-zinc-800">
+        <input id="tag-cycling" type="checkbox" name="tags" value="cycling" class="accent-pink-500"> 🚴 Cycling
+      </label>
+      <label class="flex items-center gap-2 px-3 py-2 rounded-xl border border-zinc-700 cursor-pointer hover:bg-zinc-800">
+        <input id="tag-outdoor" type="checkbox" name="tags" value="outdoor" class="accent-cyan-400"> 🌳 Outdoor
+      </label>
+      <input type="hidden" name="limit" value="50">
+      <button class="px-3 py-2 rounded-xl bg-zinc-100 text-zinc-900 font-semibold hover:scale-105 transition">Filter</button>
+    </form>
+  </div>
+</section>
+
+<section>
+  <div id="events-container"
+       hx-get="/events/partial?limit=30"
+       hx-trigger="load,refresh from:body"
+       hx-swap="innerHTML">
+    <div class="text-zinc-400">Loading events…</div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: alembic-migrate
+  namespace: houston-events
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: htownmaniaacr.azurecr.io/houston-event-mania:latest
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - secretRef:
+                name: houston-event-mania-secrets
+  backoffLimit: 2
+

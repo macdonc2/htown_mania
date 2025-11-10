@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: houston-event-mania
+  namespace: houston-events
+spec:
+  selector:
+    app: houston-event-mania
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000

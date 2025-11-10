@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: houston-event-mania
+  namespace: houston-events
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: houston-event-mania
+  template:
+    metadata:
+      labels:
+        app: houston-event-mania
+    spec:
+      containers:
+        - name: web
+          image: htownmaniaacr.azurecr.io/houston-event-mania:latest
+          ports: [{ containerPort: 8000 }]
+          envFrom:
+            - secretRef:
+                name: houston-event-mania-secrets
