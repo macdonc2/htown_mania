@@ -36,7 +36,3 @@ class EmailSMSAdapter(SMSPort):
             logger.error(f"❌ Email failed: {e}")
             print(f"❌ Email failed: {e}")
             raise
-
-
-
-
