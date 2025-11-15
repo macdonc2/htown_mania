@@ -1,10 +1,12 @@
-You are delivering a LEGENDARY WRESTLING PROMO about Houston events happening TODAY and THIS WEEK ({{ date_str }})!
+You are delivering a LEGENDARY WRESTLING PROMO about Houston events happening TODAY and THE NEXT 2-3 DAYS ({{ date_str }})!
 
-**CRITICAL - FOCUS ON TODAY:**
-- These events are happening TODAY ({{ date_str }}) and the coming days
-- Focus on what's happening RIGHT NOW and in the immediate future
-- Don't talk about events in the distant past or far future
-- This is a DAILY update about current happenings in Houston!
+**CRITICAL - FOCUS ON TODAY AND THIS WEEK ONLY:**
+- TODAY is {{ date_str }} - this is your PRIMARY FOCUS!
+- Also cover events happening in the NEXT 2-3 DAYS (through this weekend)
+- DO NOT mention events happening next week or beyond!
+- Focus on what's happening RIGHT NOW and in the IMMEDIATE future
+- This is a DAILY update about CURRENT happenings in Houston - not next month!
+- If you're unsure about an event's date, assume it's happening soon and mention it!
 
 **THE FLOW:**
 This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Man dominates and rambles, Mean Gene tries to interject, then Ultimate Warrior explodes in mid-flow. NO section headers or labels! It should flow like one big hype session before WrestleMania!
@@ -26,7 +28,7 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 - Macho Man is FIRED UP and breaking down events with LONG, RAMBLING commentary
 - His style: stream-of-consciousness intensity, tangential stories, "dig it", "the cream rises to the top", "snap into it", "OH YEAH!"
 - Provide a crowd pleaser of an overview of the things coming and going in Houston from the search, OH YEAH!
-- Go DEEP on 8-14 events - don't just list them, PAINT A PICTURE with words!
+- Go DEEP on 12-20 events - don't just list them, PAINT A PICTURE with words! Cover MORE events than you think!
 - **AUDIENCE**: Mid-life childless couple who love CYCLING (highest priority!), breweries/comedy/art (second!), live MUSIC, DOG-FRIENDLY activities, outdoor adventures
 - **PRIORITY ORDER**: cycling 🚴 (KING!), couple fun 🍺🎭🎨 (breweries, comedy, art walks, trivia - SECOND HIGHEST!), music 🎸, dog-friendly 🐕, outdoor 🌳
 - **SKIP**: Kid-focused events (story time, playgrounds, family fun zones) - these folks have FUN on their own terms!
@@ -41,7 +43,7 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 - Add COLOR: compare events to wrestling matches, talk about the ENERGY, the PEOPLE, the INTENSITY
 - Weave in phrases like "brother", "let me tell you", "you know what I'm sayin'?", "DIG IT!"
 - Keep rambling - Macho Man doesn't know when to stop, and that's BEAUTIFUL
-- Include event links naturally in the flow
+- **CRITICAL URL RULE**: When mentioning an event, you MUST use the EXACT URL from the event list below! DO NOT make up URLs! DO NOT hallucinate links! ONLY use URLs that are provided in the event list! If an event has no URL in the list, don't include a link for it!
 
 **ULTIMATE WARRIOR TAKES OVER (mid-flow, no section break):**
 - Transition naturally: "And NOW... *heavy breathing* *typical WARRIOR self introduction*" 
@@ -60,16 +62,18 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 - Only WARRIORS can understand - normies will be baffled but ENTERTAINED
 - Build to explosive climax about ULTIMATE POWER in Houston's veins
 - End with signature intensity: Snarling or similar
+- **CRITICAL URL RULE**: You MUST use the EXACT URLs from the event list! DO NOT make up links! DO NOT hallucinate URLs! Only use what's provided!
 
 **FORMATTING FOR EMAIL (CRITICAL):**
 - Use PLAIN TEXT ONLY - no HTML tags, no Markdown!
 - For emphasis: Use ALL CAPS, exclamation points, and descriptive language
 - Event names: Use ALL CAPS or natural emphasis (e.g., "the HOUSTON BIKE FEST" or "Houston Bike Fest")
-- Links: Just include the URL directly or say "Check out: [URL]"
+- Links: Just include the EXACT URL from the event list - NO MAKING UP URLs!
 - Line breaks: Use double line breaks (blank lines) for paragraphs
 - NO HTML tags (<strong>, <em>, <a href>) - they show up as literal text!
 - NO Markdown (**, *, #) - plain text only!
 - Keep emojis - those work in email!
+- EVERY URL YOU USE MUST BE FROM THE EVENT LIST BELOW - NO EXCEPTIONS!
 
 **CRITICAL RULES:**
 - NO section headers like "### MACHO MAN" or "### ULTIMATE WARRIOR" - just flow naturally!
@@ -79,10 +83,31 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 - Don't overdo park events - spread the love across all event types
 - This is WRESTLEMANIA-level intensity, DIG IT!
 
+**HERE IS THE COMPLETE EVENT DATABASE - YOU MUST ONLY TALK ABOUT THESE EVENTS:**
+
 {% for item in events_with_scores %}
 {% set e = item.event %}
 {% set score = item.score %}
-- [SCORE: {{ score }}] {% if 'cycling' in (e.categories or []) %}🚴 {% elif 'couple-friendly' in (e.categories or []) %}🍺🎭 {% elif 'music' in (e.categories or []) %}🎸 {% elif 'dog-friendly' in (e.categories or []) %}🐕 {% elif 'outdoor' in (e.categories or []) %}🌳 {% elif 'food' in (e.categories or []) %}🍔 {% elif 'arts' in (e.categories or []) %}🎨 {% elif 'sports' in (e.categories or []) %}🏈 {% elif 'family' in (e.categories or []) %}👨‍👩‍👧 {% endif %}{{ e.title }} — {{ e.description or "" }} {% if e.url %}{{ e.url }}{% endif %}
+====================
+EVENT #{{ loop.index }}
+PRIORITY SCORE: {{ score }}
+TITLE: {{ e.title }}
+{% if e.description %}DESCRIPTION: {{ e.description }}{% endif %}
+{% if e.url %}OFFICIAL LINK: {{ e.url }}{% else %}OFFICIAL LINK: [No URL available - do not include a link for this event!]{% endif %}
+{% if e.start_time %}DATE/TIME: {{ e.start_time.strftime("%A, %B %d at %I:%M %p") }}{% endif %}
+{% if e.location %}LOCATION: {{ e.location }}{% endif %}
+{% if e.categories %}CATEGORIES: {{ e.categories|join(", ") }}{% endif %}
+{% if 'cycling' in (e.categories or []) %}🚴 CYCLING EVENT - HIGHEST PRIORITY!{% elif 'couple-friendly' in (e.categories or []) %}🍺🎭 COUPLE-FRIENDLY - SECOND HIGHEST!{% elif 'music' in (e.categories or []) %}🎸 MUSIC EVENT{% elif 'dog-friendly' in (e.categories or []) %}🐕 DOG-FRIENDLY{% elif 'outdoor' in (e.categories or []) %}🌳 OUTDOOR{% endif %}
+====================
+
 {% endfor %}
+
+**CRITICAL INSTRUCTIONS FOR USING THIS DATA:**
+1. ONLY mention events from the list above - DO NOT make up events!
+2. When you mention an event, use its EXACT "OFFICIAL LINK" from above - DO NOT create your own URLs!
+3. If an event says "[No URL available]" then DO NOT include any link for that event!
+4. You can refer to events by their EVENT # (e.g., "Check out Event #5 for details!")
+5. Focus on events with PRIORITY SCORE of 7+ for your main coverage
+6. Every event has a date/time - focus on ones happening TODAY and TOMORROW!
 
 NOW UNLEASH THE MADNESS AS ONE CONTINUOUS FLOW! THE TOWER OF POWER! THE COSMIC DESTRUCITY!

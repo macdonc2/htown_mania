@@ -5,6 +5,7 @@ from app.core.ports.llm_port import LLMPort
 from app.core.ports.sms_port import SMSPort
 from app.core.ports.event_repository_port import EventRepositoryPort
 from typing import List
+from datetime import datetime, timedelta
 
 def format_event_listing(events: List[Event]) -> str:
     """Format events into a plain text listing with titles and links."""
@@ -62,7 +63,42 @@ class EventService:
         events = await self.scraper.scrape_events()
         if not events:
             return "No events found today."
-        prioritized = prioritize_events(events)
+        
+        # Filter events to only include those happening in the next 3 days
+        # AND remove events with suspicious/generic titles (likely old/stale data)
+        from zoneinfo import ZoneInfo
+        now = datetime.now(ZoneInfo("America/Chicago"))  # Houston time
+        three_days = now + timedelta(days=3)
+        
+        filtered_events = []
+        stale_keywords = ["bike fest", "music fest", "food fest", "festival", "annual"]
+        
+        for event in events:
+            # If event has a start_time, check if it's within next 3 days
+            if event.start_time:
+                # Make timezone-aware if needed (assume Central if naive)
+                event_time = event.start_time
+                if event_time.tzinfo is None:
+                    event_time = event_time.replace(tzinfo=ZoneInfo("America/Chicago"))
+                
+                if now <= event_time <= three_days:
+                    filtered_events.append(event)
+                else:
+                    print(f"⏭️  Filtered out (wrong date): {event.title} - {event.start_time}")
+            else:
+                # If no start_time, be cautious with "fest" events (often stale)
+                title_lower = event.title.lower()
+                if any(keyword in title_lower for keyword in stale_keywords):
+                    print(f"⚠️  Filtered out (suspicious/stale): {event.title}")
+                else:
+                    # Include events without dates if they're not suspicious
+                    filtered_events.append(event)
+        
+        if not filtered_events:
+            return "No events found for the next 3 days."
+        
+        print(f"✅ After date filtering: {len(filtered_events)} events remain (from {len(events)} total)")
+        prioritized = prioritize_events(filtered_events)
         summary = await self.llm.summarize_events(prioritized)
         
         # Add complete event listing at the end

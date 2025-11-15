@@ -5,6 +5,7 @@ Pulls from multiple APIs: Eventbrite, Ticketmaster, Meetup.
 from typing import List
 import httpx
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from app.core.domain.models import Event
 from app.config.settings import Settings
 
@@ -53,9 +54,9 @@ class EventAPIAggregator:
             url = "https://www.eventbriteapi.com/v3/events/search/"
             headers = {"Authorization": f"Bearer {self.settings.eventbrite_api_key}"}
             
-            # Get events for next 7 days
+            # Get events for TODAY through next 3 days only
             start_date = datetime.now().isoformat()
-            end_date = (datetime.now() + timedelta(days=7)).isoformat()
+            end_date = (datetime.now() + timedelta(days=3)).isoformat()
             
             params = {
                 "location.latitude": self.HOUSTON_LAT,
@@ -75,10 +76,31 @@ class EventAPIAggregator:
                         item.get("name", {}).get("text", ""),
                         item.get("description", {}).get("text", "")
                     )
+                    
+                    # Parse start time and convert to Houston (Central) time
+                    start_time = None
+                    if item.get("start"):
+                        try:
+                            utc_time = datetime.fromisoformat(item["start"].get("utc", "").replace("Z", "+00:00"))
+                            # Convert to Houston time (US/Central)
+                            start_time = utc_time.astimezone(ZoneInfo("America/Chicago"))
+                        except:
+                            pass
+                    
+                    # Parse location
+                    location = None
+                    if item.get("venue"):
+                        venue_name = item["venue"].get("name", "")
+                        city = item["venue"].get("address", {}).get("city", "")
+                        if venue_name:
+                            location = f"{venue_name}, {city}" if city else venue_name
+                    
                     events.append(Event(
                         title=item.get("name", {}).get("text", "")[:200],
                         description=item.get("description", {}).get("text", "")[:500] if item.get("description") else None,
                         url=item.get("url"),
+                        start_time=start_time,
+                        location=location,
                         source="Eventbrite",
                         categories=categories
                     ))
@@ -92,10 +114,17 @@ class EventAPIAggregator:
         events = []
         try:
             url = "https://app.ticketmaster.com/discovery/v2/events.json"
+            
+            # Filter to TODAY through next 3 days only
+            start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            end_date = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
+            
             params = {
                 "apikey": self.settings.ticketmaster_api_key,
                 "city": "Houston",
                 "stateCode": "TX",
+                "startDateTime": start_date,
+                "endDateTime": end_date,
                 "size": 50,
                 "sort": "date,asc"
             }
@@ -120,10 +149,33 @@ class EventAPIAggregator:
                             if "outdoor" not in categories:
                                 categories.append("outdoor")
                     
+                    # Parse start time and convert to Houston (Central) time
+                    start_time = None
+                    if item.get("dates", {}).get("start"):
+                        date_str = item["dates"]["start"].get("dateTime")
+                        if date_str:
+                            try:
+                                utc_time = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+                                # Convert to Houston time (US/Central)
+                                start_time = utc_time.astimezone(ZoneInfo("America/Chicago"))
+                            except:
+                                pass
+                    
+                    # Parse location
+                    location = None
+                    if item.get("_embedded", {}).get("venues"):
+                        venue = item["_embedded"]["venues"][0]
+                        venue_name = venue.get("name", "")
+                        city = venue.get("city", {}).get("name", "")
+                        if venue_name:
+                            location = f"{venue_name}, {city}" if city else venue_name
+                    
                     events.append(Event(
                         title=item.get("name", "")[:200],
                         description=item.get("info", "")[:500] if item.get("info") else None,
                         url=item.get("url"),
+                        start_time=start_time,
+                        location=location,
                         source="Ticketmaster",
                         categories=categories
                     ))
