@@ -14,7 +14,7 @@ spec:
             - name: worker
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: "{{ .Values.image.pullPolicy | default "IfNotPresent" }}"
-              command: ["python", "-m", "app.workers.run_daily_job"]
+              command: ["python", "-m", "app.workers.run_daily_job", "--agentic"]
               envFrom:
                 - secretRef:
                     name: "{{ .Values.envFromSecret }}"
