@@ -77,6 +77,9 @@ secrets/
 *.aiff
 *.aif
 
+# Audio files folder
+audio/
+
 
 
 

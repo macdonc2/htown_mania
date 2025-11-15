@@ -16,9 +16,10 @@ class Settings(BaseSettings):
     openai_temperature: float = 1.1
     
     # Event API Keys (optional - fallback to scraping if not provided)
-    eventbrite_api_key: str = ""
+    eventbrite_api_key: str = ""  # Deprecated - removed from system
     ticketmaster_api_key: str = ""
     meetup_api_key: str = ""
+    serpapi_key: str = ""  # SerpAPI for Google Events aggregation
 
     twilio_account_sid: str = ""
     twilio_auth_token: str = ""
