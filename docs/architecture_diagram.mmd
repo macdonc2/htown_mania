@@ -1,0 +1,103 @@
+graph TB
+    subgraph "User Interface"
+        USER[👤 User Trigger]
+    end
+    
+    subgraph "Application Layer"
+        SERVICE[AgenticEventService<br/>Orchestrates workflow & handles I/O]
+    end
+    
+    subgraph "Planning Agent (REACT Orchestrator)"
+        PLANNING[🧠 Planning Agent<br/>GPT-4o<br/>---<br/>Reasons, Acts, Observes<br/>Maintains Scratchpad<br/>Generates Questions<br/>Makes Phase Decisions]
+        STATE[📋 PlanningState<br/>---<br/>Phase Tracking<br/>Scratchpad/Observations<br/>Events Found/Reviewed<br/>Questions<br/>Confidence Scores]
+    end
+    
+    subgraph "Search Agents (Parallel)"
+        TM[🎫 Ticketmaster Agent<br/>---<br/>Discovery API v2<br/>Conf: 0.9]
+        MU[👥 Meetup Agent<br/>---<br/>GraphQL API<br/>Conf: 0.8]
+        SERP[🔍 SerpAPI Agent<br/>---<br/>Google Events<br/>Aggregates All Sources<br/>Conf: 0.95]
+    end
+    
+    subgraph "Review Agent Swarm (Parallel)"
+        WEB[🌐 Web Search Enricher<br/>---<br/>SerpAPI + GPT-4o-mini<br/>Verifies Event Legitimacy]
+        CONTENT[📄 Content Enricher<br/>---<br/>Scraping + GPT-4o-mini<br/>Extracts Details from Pages]
+        REL[⭐ Relevance Scorer<br/>---<br/>Domain Keywords<br/>User Preference Matching]
+        DATE[📅 Date Verifier<br/>---<br/>Timezone Validation<br/>7-Day Window Check]
+    end
+    
+    subgraph "Synthesis"
+        PROMO[🎤 Promo Generator Agent<br/>GPT-4o temp=0.9<br/>---<br/>Jinja2 Templates<br/>Wrestling Energy<br/>Event Integration]
+    end
+    
+    subgraph "Infrastructure Adapters"
+        DB[(🗄️ PostgreSQL<br/>Event Repository)]
+        SMS[📱 SMS Gateway<br/>Twilio/Email]
+    end
+    
+    subgraph "External APIs"
+        TM_API[Ticketmaster API]
+        MU_API[Meetup API]
+        SERP_API[SerpAPI]
+        OPENAI[OpenAI API<br/>GPT-4o and GPT-4o-mini]
+    end
+    
+    %% User flow
+    USER -->|Trigger Daily Job| SERVICE
+    SERVICE -->|Initialize State| PLANNING
+    
+    %% Planning coordination
+    PLANNING <-->|Read/Update| STATE
+    PLANNING -->|Phase: SEARCHING| TM
+    PLANNING -->|Phase: SEARCHING| MU
+    PLANNING -->|Phase: SEARCHING| SERP
+    
+    %% Search agents
+    TM -->|API Call| TM_API
+    MU -->|API Call| MU_API
+    SERP -->|API Call| SERP_API
+    
+    TM -->|Events + Conf| PLANNING
+    MU -->|Events + Conf| PLANNING
+    SERP -->|Events + Conf| PLANNING
+    
+    %% Review phase
+    PLANNING -->|Phase: REVIEWING<br/>For Each Event| WEB
+    PLANNING -->|Phase: REVIEWING<br/>For Each Event| CONTENT
+    PLANNING -->|Phase: REVIEWING<br/>For Each Event| REL
+    PLANNING -->|Phase: REVIEWING<br/>For Each Event| DATE
+    
+    %% Review agents to APIs
+    WEB -->|Search Query| SERP_API
+    WEB -->|Synthesis| OPENAI
+    CONTENT -->|Analysis| OPENAI
+    
+    WEB -->|Enriched Events| PLANNING
+    CONTENT -->|Enriched Events| PLANNING
+    REL -->|Enriched Events| PLANNING
+    DATE -->|Enriched Events| PLANNING
+    
+    %% Synthesis phase
+    PLANNING -->|Phase: SYNTHESIZING<br/>Enriched Events + Context| PROMO
+    PROMO -->|Generate| OPENAI
+    PROMO -->|Wrestling Promo| PLANNING
+    
+    %% Finalization
+    PLANNING -->|Final State| SERVICE
+    SERVICE -->|Save Events| DB
+    SERVICE -->|Send Promo| SMS
+    
+    %% Styling
+    classDef planning fill:#ff6b6b,stroke:#c92a2a,color:#fff,stroke-width:3px
+    classDef search fill:#4ecdc4,stroke:#0b7285,color:#fff,stroke-width:2px
+    classDef review fill:#95e1d3,stroke:#087f5b,color:#000,stroke-width:2px
+    classDef synthesis fill:#ffd93d,stroke:#f08c00,color:#000,stroke-width:2px
+    classDef infra fill:#a29bfe,stroke:#6c5ce7,color:#fff,stroke-width:2px
+    classDef api fill:#dfe6e9,stroke:#636e72,color:#000,stroke-width:1px
+    
+    class PLANNING,STATE planning
+    class TM,MU,SERP search
+    class WEB,CONTENT,REL,DATE review
+    class PROMO synthesis
+    class SERVICE,DB,SMS infra
+    class TM_API,MU_API,SERP_API,OPENAI api
+

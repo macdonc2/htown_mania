@@ -1,0 +1,116 @@
+sequenceDiagram
+    autonumber
+    participant User
+    participant Service as AgenticEventService
+    participant Planning as Planning Agent<br/>(REACT)
+    participant State as PlanningState<br/>(Scratchpad)
+    
+    box rgba(76, 205, 196, 0.3) Search Agents
+    participant TM as Ticketmaster
+    participant MU as Meetup
+    participant SERP as SerpAPI
+    end
+    
+    box rgba(149, 225, 211, 0.3) Review Swarm
+    participant WebEnrich as Web Search<br/>Enricher
+    participant Content as Content<br/>Enricher
+    participant Relevance as Relevance<br/>Scorer
+    participant DateCheck as Date<br/>Verifier
+    end
+    
+    participant Promo as Promo Generator
+    participant DB as Database
+    participant SMS as SMS Gateway
+    
+    %% Initialization
+    User->>Service: Trigger Daily Job
+    Service->>State: Initialize PlanningState
+    State-->>Service: Empty State (Phase=INIT)
+    Service->>Planning: run_workflow(state)
+    
+    %% REACT: Initialization Phase
+    Planning->>State: add_observation("Starting workflow")
+    Planning->>State: Set Phase = SEARCHING
+    
+    %% REACT: Search Phase
+    Planning->>State: add_observation("Need to gather events")
+    
+    par Parallel Search Execution
+        Planning->>TM: search_events()
+        Planning->>MU: search_events()
+        Planning->>SERP: search_events()
+    end
+    
+    TM-->>Planning: SearchResult (18 events, conf=0.9)
+    MU-->>Planning: SearchResult (12 events, conf=0.8)
+    SERP-->>Planning: SearchResult (30 events, conf=0.95)
+    
+    Planning->>State: add_observation("TM: 18 events")
+    Planning->>State: add_observation("MU: 12 events")
+    Planning->>State: add_observation("SERP: 30 events")
+    Planning->>State: Store deduplicated events (45 unique)
+    
+    Planning->>Planning: _reason_and_generate_questions()
+    Planning->>State: add_questions([Q1, Q2, Q3])
+    Planning->>State: add_observation("Search complete, moving to review")
+    Planning->>State: Set Phase = REVIEWING
+    
+    %% REACT: Review Phase
+    Planning->>State: add_observation("Need to validate 45 events")
+    
+    rect rgba(149, 225, 211, 0.2)
+    Note over Planning,DateCheck: Review Swarm (5 concurrent, per event)
+    
+    loop For Each Event (batches of 5)
+        par Parallel Review for Event 1
+            Planning->>WebEnrich: review_event(event1)
+            Planning->>Content: review_event(event1)
+            Planning->>Relevance: review_event(event1)
+            Planning->>DateCheck: review_event(event1)
+        end
+        
+        WebEnrich-->>Planning: ReviewResult (verified=True, conf=0.85)
+        Content-->>Planning: ReviewResult (verified=True, conf=0.9)
+        Relevance-->>Planning: ReviewResult (score=10, conf=1.0)
+        DateCheck-->>Planning: ReviewResult (verified=True, conf=1.0)
+        
+        Planning->>Planning: Aggregate Results (majority vote)
+        Planning->>State: Store EnrichedEvent (verified=True, conf=0.94)
+    end
+    end
+    
+    Planning->>State: add_observation("Review complete: 38/45 verified")
+    Planning->>State: Update questions (mark answered)
+    Planning->>State: add_observation("Data quality good, ready for promo")
+    Planning->>State: Set Phase = SYNTHESIZING
+    
+    %% REACT: Synthesis Phase
+    Planning->>State: add_observation("Generating final promo")
+    Planning->>Promo: generate_promo(enriched_events, state)
+    
+    Promo->>Promo: Sort by relevance score
+    Promo->>Promo: Apply Jinja2 template
+    Promo->>Promo: Generate with GPT-4o
+    
+    Promo-->>Planning: PromoResult (promo_text, events_included, conf=0.95)
+    Planning->>State: Store promo_generated
+    Planning->>State: add_observation("Promo generated successfully")
+    Planning->>State: Set Phase = COMPLETE
+    Planning->>State: mark_complete()
+    
+    %% Finalization
+    Planning-->>Service: Return Final State
+    
+    Service->>DB: save_events(45 events)
+    DB-->>Service: Success
+    
+    Service->>SMS: send_sms(recipient, promo + events + scratchpad)
+    SMS-->>Service: Success
+    
+    Service->>Service: _print_scratchpad(state)
+    Service-->>User: ✅ Workflow Complete<br/>📊 Stats Summary<br/>📝 REACT Trace
+    
+    %% Styling
+    Note over Planning,State: REACT Pattern:<br/>Thought → Action → Observation → Repeat
+    Note over WebEnrich,DateCheck: Each agent runs independently<br/>Results aggregated via majority voting
+
