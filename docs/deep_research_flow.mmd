@@ -1,0 +1,84 @@
+sequenceDiagram
+    autonumber
+    participant Planning as Planning Agent<br/>(REACT)
+    participant Entity as Entity Extraction
+    participant QueryGen as Query Generator
+    
+    box rgba(255, 217, 61, 0.3) Research Swarm
+    participant WebRes as Web Search
+    participant Wiki as Wikipedia
+    participant News as News
+    participant Music as Music DB
+    end
+    
+    participant Synth as Knowledge<br/>Synthesizer
+    participant Promo as Enhanced<br/>Promo Generator
+    
+    Note over Planning: Phases: SEARCHING → REVIEWING<br/>(existing workflow)
+    
+    rect rgba(255, 217, 61, 0.2)
+    Note over Planning,Synth: NEW: RESEARCHING PHASE
+    
+    Planning->>Planning: transition_to_research
+    Planning->>Planning: add_observation("Starting research on 38 events")
+    
+    loop For Each Event (parallel)
+        Planning->>Entity: extract_entities(event)
+        Note over Entity: Analyzes title + description<br/>Identifies: artists, venues,<br/>organizers, topics, genres
+        Entity-->>Planning: List[Entity] (4.1 avg per event)
+        Planning->>Planning: add_observation("Found X entities")
+        
+        Planning->>QueryGen: generate_queries(event, entities)
+        Note over QueryGen: Creates priority queries:<br/>- Biographical<br/>- Contextual<br/>- Current/trending<br/>- Relational
+        QueryGen-->>Planning: List[ResearchQuery] (4.7 avg)
+        Planning->>Planning: add_observation("Generated X queries")
+        
+        par Research Query 1: "Artist biography"
+            Planning->>WebRes: research(query)
+            WebRes-->>Planning: Facts + snippets + sources
+            Planning->>Planning: add_observation("Web: 8 facts")
+        and Research Query 1: Same query
+            Planning->>Wiki: research(query)
+            Wiki-->>Planning: Biographical data (3200 words)
+            Planning->>Planning: add_observation("Wiki: full bio")
+        and Research Query 1: Same query
+            Planning->>Music: research(query)
+            Music-->>Planning: Discography + collabs
+            Planning->>Planning: add_observation("Music: 42 collabs")
+        end
+        
+        par Research Query 2: "Recent performances"
+            Planning->>WebRes: research(query)
+            WebRes-->>Planning: Results
+        and Research Query 2: Same query
+            Planning->>News: research(query)
+            News-->>Planning: Recent articles
+            Planning->>Planning: add_observation("News: 5 articles")
+        end
+        
+        Note over Planning: More queries executed in parallel...<br/>(avg 4.7 queries × 4 agents = 18.8 research calls per event)
+        
+        Planning->>Synth: synthesize(event, entities, all_results)
+        Note over Synth: Aggregates all facts<br/>Deduplicates<br/>Creates narrative<br/>Extracts key insights
+        Synth-->>Planning: EventResearch (narrative + insights)
+        Planning->>Planning: add_observation("Synthesized 250-word narrative")
+    end
+    
+    Planning->>Planning: analyze_research_results
+    Planning->>Planning: add_observation("Research complete:<br/>156 entities, 892 facts, conf: 0.89")
+    
+    end
+    
+    rect rgba(168, 230, 207, 0.2)
+    Note over Planning,Promo: ENHANCED: SYNTHESIZING PHASE
+    
+    Planning->>Promo: generate_promo(events + research_insights)
+    Note over Promo: Uses research narratives<br/>Weaves in entity context<br/>Adds storytelling depth<br/>Highlights what makes<br/>each event special
+    Promo-->>Planning: Enhanced Promo with Rich Context
+    Planning->>Planning: add_observation("Promo generated with research insights")
+    end
+    
+    Planning->>Planning: mark_complete()
+    
+    Note over Planning: Final Stats:<br/>38 events researched<br/>156 entities found<br/>178 queries executed<br/>892 facts discovered<br/>Avg 23.5 facts/event
+

@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     ticketmaster_api_key: str = ""
     meetup_api_key: str = ""
     serpapi_key: str = ""  # SerpAPI for Google Events aggregation
+    
+    # Deep Research APIs (optional)
+    newsapi_key: str = ""  # NewsAPI for recent news articles
 
     twilio_account_sid: str = ""
     twilio_auth_token: str = ""

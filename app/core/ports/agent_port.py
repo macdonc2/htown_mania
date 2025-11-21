@@ -70,10 +70,16 @@ class PromoAgentPort(ABC):
     async def generate_promo(
         self, 
         events: List[EnrichedEvent],
-        planning_context: PlanningState
+        planning_context: PlanningState,
+        research_results: List = None
     ) -> PromoGenerationResult:
         """
         Generate the final wrestling promo based on enriched events.
+        
+        Args:
+            events: Enriched and validated events
+            planning_context: The planning state with observations and context
+            research_results: Optional list of EventResearch with deep research insights
         """
         pass
 

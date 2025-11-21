@@ -80,6 +80,9 @@ secrets/
 # Audio files folder
 audio/
 
+# Vibe logs
+CHANGELOG.md
+
 
 
 

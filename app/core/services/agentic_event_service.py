@@ -34,20 +34,31 @@ class AgenticEventService:
         self.repository = repository
         self.sms_recipient = sms_recipient
         self.dev_sms_mute = dev_sms_mute
+        self.dry_run = False  # Can be set externally for full dry run (no DB, no SMS)
+        self.no_db = False  # Can be set externally to skip DB but send email
     
-    async def run_daily_event_flow(self) -> str:
+    async def run_daily_event_flow(self, enable_research: bool = False) -> str:
         """
         Run the complete agentic workflow.
+        
+        Args:
+            enable_research: If True, enables deep research phase
         
         Returns:
             The generated promo text
         """
         print("\n" + "="*80)
-        print("🤖 STARTING AGENTIC EVENT WORKFLOW")
+        if enable_research:
+            print("🔬 STARTING DEEP RESEARCH EVENT WORKFLOW (Agentic + Research)")
+        else:
+            print("🤖 STARTING AGENTIC EVENT WORKFLOW")
         print("="*80 + "\n")
         
         # Initialize state
-        initial_state = PlanningState(phase=AgentPhase.INITIALIZING)
+        initial_state = PlanningState(
+            phase=AgentPhase.INITIALIZING,
+            research_enabled=enable_research  # Enable/disable research
+        )
         
         # Run the planning agent workflow
         final_state = await self.planning_agent.run_workflow(initial_state)
@@ -76,13 +87,19 @@ class AgenticEventService:
         # Build the full message: Promo + Event Listing + Scratchpad
         full_message = promo_text + event_listing + scratchpad_text
         
-        # Save events to repository
-        if events_to_save:
+        # Save events to repository (skip in dry-run or no-db mode)
+        if self.dry_run:
+            print(f"🧪 [DRY RUN] Skipping DB save of {len(events_to_save)} events")
+        elif self.no_db:
+            print(f"🗄️  [NO-DB] Skipping DB save of {len(events_to_save)} events (no PostgreSQL needed)")
+        elif events_to_save:
             await self.repository.save_events(events_to_save)
             print(f"💾 Saved {len(events_to_save)} events to repository")
         
-        # Send SMS
-        if not self.dev_sms_mute:
+        # Send SMS (skip only in dry-run mode, NOT in no-db mode)
+        if self.dry_run:
+            print(f"🧪 [DRY RUN] Skipping SMS to {self.sms_recipient}")
+        elif not self.dev_sms_mute:
             await self.sms.send_sms(self.sms_recipient, full_message)
             print(f"📱 SMS sent to {self.sms_recipient}")
         else:
@@ -105,6 +122,14 @@ class AgenticEventService:
         if final_state.events_reviewed:
             avg_conf = sum(e.confidence_score for e in final_state.events_reviewed) / len(final_state.events_reviewed)
             print(f"  - Avg confidence: {avg_conf:.2f}")
+        
+        if enable_research and final_state.events_researched:
+            print(f"  - Events researched: {len(final_state.events_researched)}")
+        
+        if self.dry_run:
+            print("\n🧪 DRY RUN MODE: No data was saved to database or sent via SMS")
+        elif self.no_db:
+            print("\n🗄️  NO-DB MODE: Database save skipped, but email was sent!")
         
         print("="*80 + "\n")
         

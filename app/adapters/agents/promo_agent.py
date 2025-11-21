@@ -49,7 +49,8 @@ class PromoGeneratorAgent(PromoAgentPort):
     async def generate_promo(
         self,
         events: List[EnrichedEvent],
-        planning_context: PlanningState
+        planning_context: PlanningState,
+        research_results: List = None
     ) -> PromoGenerationResult:
         """
         Generate the wrestling promo.
@@ -57,10 +58,12 @@ class PromoGeneratorAgent(PromoAgentPort):
         Args:
             events: Enriched and validated events
             planning_context: The planning state with observations and context
+            research_results: Optional list of EventResearch with deep research insights
         
         Returns:
             PromoGenerationResult with the generated promo
         """
+        research_results = research_results or []
         try:
             # Prepare events with scores
             events_with_scores = []
@@ -83,7 +86,28 @@ class PromoGeneratorAgent(PromoAgentPort):
             # Prepare context from planning observations
             planning_insights = self._extract_planning_insights(planning_context)
             
-            # Render the template
+            # ⭐ INJECT RESEARCH INTO EACH EVENT (not after template!)
+            research_by_title = {}
+            if research_results:
+                for research in research_results:
+                    research_by_title[research.event_title] = research
+            
+            # Enhance events_with_scores with research data
+            for item in events_with_scores:
+                event = item["event"]
+                research = research_by_title.get(event.title)
+                
+                if research:
+                    # Add research narrative and insights to the event item
+                    item["research_narrative"] = research.synthesized_narrative
+                    item["research_insights"] = research.key_insights[:5]
+                    item["research_facts_count"] = sum(len(r.facts) for r in research.results)
+                else:
+                    item["research_narrative"] = ""
+                    item["research_insights"] = []
+                    item["research_facts_count"] = 0
+            
+            # Render the template with research-enhanced events
             template = self.env.get_template("summary.j2")
             today = datetime.now()
             date_str = today.strftime("%A, %B %d, %Y")
@@ -91,7 +115,8 @@ class PromoGeneratorAgent(PromoAgentPort):
             rendered_prompt = template.render(
                 events=[item["event"] for item in events_with_scores],
                 events_with_scores=events_with_scores,
-                date_str=date_str
+                date_str=date_str,
+                has_research=bool(research_results)
             )
             
             # Add planning context to the prompt

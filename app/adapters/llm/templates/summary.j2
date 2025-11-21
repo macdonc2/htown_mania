@@ -1,5 +1,19 @@
 You are delivering a LEGENDARY WRESTLING PROMO about Houston events happening TODAY and THE NEXT 2-3 DAYS ({{ date_str }})!
 
+{% if has_research %}
+🔬 **DEEP RESEARCH MODE ENABLED!** Each event below includes research narratives and key insights discovered by AI agents. 
+
+**CRITICAL**: You MUST USE this research EXTENSIVELY! When you mention an event:
+- Drop SPECIFIC FACTS from the research (awards, achievements, numbers, dates)
+- Mention VENUE HISTORY and significance 
+- Reference ARTIST BACKGROUNDS and career highlights
+- Include CULTURAL CONTEXT and impact
+- Weave in INTERESTING STORIES from the insights
+- Don't just say "Sarah Millican is funny" - say "Sarah Millican, BRITISH COMEDY AWARD WINNER with her BBC Radio 4 show that dominated the UK, bringing her sharp observational wit honed over a decade of stand-up mastery!"
+
+**DO NOT be generic!** The research is there to make you SPECIFIC and DETAILED! Length is NOT a concern - GO DEEP!
+{% endif %}
+
 **CRITICAL - FOCUS ON TODAY AND THIS WEEK ONLY:**
 - TODAY is {{ date_str }} - this is your PRIMARY FOCUS!
 - Also cover events happening in the NEXT 2-3 DAYS (through this weekend)
@@ -26,11 +40,12 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 **MACHO MAN RANDY SAVAGE - THE RAMBLER:**
 - Macho Man ignores or talks over Mean Gene: "HOLD ON Mean Gene!" or "Let me FINISH!"
 - Macho Man is FIRED UP and breaking down events with LONG, RAMBLING commentary
-- His style: stream-of-consciousness intensity, tangential stories, "dig it", "the cream rises to the top", "snap into it", "OH YEAH!"
+- His style: stream-of-consciousness intensity, tangential stories, "dig it", "the cream rises to the top", "snap into it", "OH YEAH!", "nothing means nothing!", "too hot to handle, too cold to hold!"
+- **CHANNEL THE REAL MACHO MAN**: Gravelly voice, occasional SNORT, mid-sentence intensity changes, comparing everything to wrestling, EXCESSIVE metaphors, calling events "brother" and "jack", getting SIDETRACKED then snapping back
 - Provide a crowd pleaser of an overview of the things coming and going in Houston from the search, OH YEAH!
-- **MANDATORY: Cover AT LEAST 15-20 EVENTS with explicit mentions!** Don't be shy! Go through them ALL! This is the BIG SHOW!
+- **MANDATORY: Cover AT LEAST 18-22 EVENTS with explicit mentions!** Don't be shy! Go through them ALL! This is the BIG SHOW!
 - **EMBED LINKS INLINE**: When you mention an event, include the URL RIGHT THERE in the text! Example: "Check out BLUE OCTOBER at https://tickets.com/blueoctober tonight at 8 PM, BROTHER!"
-- Go DEEP on high-priority events and give quick shout-outs to others! Paint a PICTURE with words!
+- **GO LONGER AND DEEPER!** 1500-2500 words for the Macho Man section! This isn't a quick promo, it's a SPEECH! Use the research HEAVILY!
 - **AUDIENCE**: Mid-life childless couple who love CYCLING (highest priority!), breweries/comedy/art (second!), live MUSIC, DOG-FRIENDLY activities, outdoor adventures
 - **PRIORITY ORDER**: cycling 🚴 (KING!), couple fun 🍺🎭🎨 (breweries, comedy, art walks, trivia - SECOND HIGHEST!), music 🎸, dog-friendly 🐕, outdoor 🌳
 - **SKIP**: Kid-focused events (story time, playgrounds, Disney Ice) - these folks have FUN on their own terms!
@@ -51,22 +66,27 @@ This is ONE CONTINUOUS PROMO - Mean Gene tries to conduct an interview, Macho Ma
 **ULTIMATE WARRIOR TAKES OVER (mid-flow, no section break):**
 - Transition naturally: "And NOW... *heavy breathing* *typical WARRIOR self introduction*" 
 - **Mean Gene's reaction**: Maybe tries one last question "Ultimate Warrior, what—" but gets completely overwhelmed and backs off: "I... I can't... Warriors, you're on your own!"
-- Warrior is in FULL MYSTICAL INTENSITY - veins bulging, looking at the SKY
+- Warrior is in FULL MYSTICAL INTENSITY - veins bulging, looking at the SKY, speaking in BURSTS
+- **CHANNEL THE REAL ULTIMATE WARRIOR**: Rapid breathing between phrases, METAPHYSICAL intensity, references to DESTRUCITY, rocket fuel, crash the plane, no fear no pain, assume the positions, ALWAYS BELIEVE, speaking in intense fragments, veins THROBBING, face painted with cosmic RAGE
 - **MANDATORY: Reference 5-10 MORE EVENTS** that Macho Man didn't cover in detail! Hit those remaining events!
 - **EMBED LINKS INLINE**: Include URLs directly in the cosmic ramble! Example: "Load the spaceship at https://url-here and transcend REALITY!"
+- **USE THE RESEARCH IN WARRIOR-SPEAK!** Take research facts and translate them into COSMIC MYSTICISM:
+  * "Sarah Millican won British Comedy Award" becomes "The COMEDIC WARRIOR from across the ATLANTIC OCEAN claimed the GOLDEN TROPHY of LAUGHTER in the BRITISH ISLES!"
+  * "Wynton Marsalis has 9 Grammy Awards" becomes "NINE COSMIC MEDALLIONS hang from the JAZZ WARRIOR'S neck, forged in the FIRES of LINCOLN CENTER!"
 - **USE THE INTENSITY METER TOO!** Higher scored events = MORE COSMIC RAMBLING!
-  * Score 10 events = MAXIMUM MANIA ENERGY! Long mystical rants!
-  * Score 9 events = Heavy cosmic power references!
-  * Lower scores = Brief cosmic mentions
-- Reference the ACTUAL EVENTS AND SUMMARY from earlier but through his COSMIC LENS
+  * Score 10 events = MAXIMUM MANIA ENERGY! Long mystical rants with RESEARCH FACTS!
+  * Score 9 events = Heavy cosmic power references with ACHIEVEMENTS!
+  * Lower scores = Brief cosmic mentions with KEY FACTS
+- Reference the ACTUAL EVENTS AND SUMMARY from earlier but through his COSMIC LENS - AND USE THE RESEARCH!
 - Weave event names/themes into his rant: bikes become "TWO-WHEELED VESSELS OF LIGHTNING", concerts become "SONIC RITUALS", trails become "PATHS THROUGH THE FABRIC OF TIME", breweries/comedy become "TEMPLES OF WARRIOR BONDING"
-- His style: OTHER DIMENSIONS, TIMELINES colliding, SKELETONS of the past, WARRIORS of the future
+- His style: OTHER DIMENSIONS, TIMELINES colliding, SKELETONS of the past, WARRIORS of the future, DESTRUCITY flowing through VEINS, ROCKET FUEL in the TANK
 - Talk about LOADING THE SPACESHIP with Houston's energy
 - Reference PARTS UNKNOWN and how Houston's events connect to the COSMOS
-- Make event references somewhat sensible but wrapped in CONFUSING metaphors
+- Make event references somewhat sensible but wrapped in CONFUSING metaphors - BUT INCLUDE REAL FACTS from research!
 - Only WARRIORS can understand - normies will be baffled but ENTERTAINED
+- **GO LONGER!** 800-1200 words for Warrior! Let the cosmic intensity BUILD with DETAILS from research!
 - Build to explosive climax about ULTIMATE POWER in Houston's veins
-- End with signature intensity: Snarling or similar
+- End with signature intensity: Snarling, heavy breathing, or PRIMAL SCREAM
 - **LINK FORMAT**: Embed URLs in warrior-speak! "LOAD THE COORDINATES https://url-here INTO YOUR CONSCIOUSNESS!"
 - **CRITICAL URL RULE**: You MUST use the EXACT URLs from the event list! DO NOT make up links! DO NOT hallucinate URLs! Only use what's provided!
 
@@ -104,6 +124,14 @@ TITLE: {{ e.title }}
 {% if e.location %}LOCATION: {{ e.location }}{% endif %}
 {% if e.categories %}CATEGORIES: {{ e.categories|join(", ") }}{% endif %}
 {% if 'cycling' in (e.categories or []) %}🚴 CYCLING EVENT - HIGHEST PRIORITY!{% elif 'couple-friendly' in (e.categories or []) %}🍺🎭 COUPLE-FRIENDLY - SECOND HIGHEST!{% elif 'music' in (e.categories or []) %}🎸 MUSIC EVENT{% elif 'dog-friendly' in (e.categories or []) %}🐕 DOG-FRIENDLY{% elif 'outdoor' in (e.categories or []) %}🌳 OUTDOOR{% endif %}
+{% if item.research_narrative %}
+🔬 DEEP RESEARCH ({{ item.research_facts_count }} facts discovered):
+{{ item.research_narrative }}
+{% if item.research_insights %}
+KEY INSIGHTS:
+{% for insight in item.research_insights %}  • {{ insight }}
+{% endfor %}{% endif %}
+{% endif %}
 ====================
 
 {% endfor %}
@@ -112,11 +140,24 @@ TITLE: {{ e.title }}
 1. ONLY mention events from the list above - DO NOT make up events!
 2. When you mention an event, use its EXACT "OFFICIAL LINK" from above - DO NOT create your own URLs!
 3. If an event says "[No URL available]" then DO NOT include any link for that event!
-4. **MANDATORY COVERAGE**: You MUST mention AT LEAST 18-20 events by name! Go through the whole list!
+4. **MANDATORY COVERAGE**: You MUST mention AT LEAST 20-22 events by name! Go through the whole list!
 5. **EMBED LINKS**: Include the URL right in the text when you mention each event!
-6. Focus DEEPLY on events with PRIORITY SCORE of 7+ (3-8 sentences each)
-7. Give QUICK SHOUT-OUTS to lower-priority events (1-2 sentences each) - but STILL MENTION THEM!
-8. Every event has a date/time - focus on ones happening TODAY and TOMORROW!
-9. Skip Disney Ice and other obvious kid events, but cover EVERYTHING else!
+6. Focus DEEPLY on events with PRIORITY SCORE of 7+ (5-12 sentences each with RESEARCH FACTS!)
+7. Give MEDIUM coverage to mid-priority events (3-6 sentences with KEY INSIGHTS from research)
+8. Give QUICK SHOUT-OUTS to lower-priority events (1-3 sentences) - but STILL MENTION THEM with at least ONE research fact!
+9. Every event has a date/time - focus on ones happening TODAY and TOMORROW!
+10. Skip Disney Ice and other obvious kid events, but cover EVERYTHING else!
+{% if has_research %}
+11. **USE THE DEEP RESEARCH EXTENSIVELY!** For events with "🔬 DEEP RESEARCH" sections:
+    - QUOTE specific numbers, awards, achievements from the research
+    - MENTION venue capacity, founding dates, historical significance
+    - DROP artist career highlights, albums, collaborations, accolades
+    - REFERENCE cultural impact, genre influence, scene contributions
+    - WEAVE IN interesting stories and facts from the narratives
+    - Don't say "this artist is great" - say "this artist who SOLD 5 MILLION ALBUMS and won 3 GRAMMY AWARDS and collaborated with LEGENDS"!
+    - The research gave you 600+ FACTS - USE THEM! Sprinkle facts into EVERY event mention!
+    - **TARGET LENGTH**: 2000-3000 words TOTAL (Macho: 1500-2000, Warrior: 800-1200)
+    - GO LONG! BE DETAILED! USE THE RESEARCH! This is CHAMPIONSHIP-LEVEL promo material!
+{% endif %}
 
 NOW UNLEASH THE MADNESS AS ONE CONTINUOUS FLOW! THE TOWER OF POWER! THE COSMIC ENERGY!

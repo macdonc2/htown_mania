@@ -1,0 +1,84 @@
+graph TB
+    subgraph "Planning Agent (REACT with Research)"
+        PLANNING[🧠 Planning Agent<br/>GPT-4o<br/>---<br/>REACT Loop with<br/>Deep Research Phase]
+    end
+    
+    subgraph "Research Phase - NEW"
+        ENTITY[🔍 Entity Extraction Agent<br/>GPT-4o-mini<br/>---<br/>Extracts: Artists, Venues,<br/>Organizers, Topics, Genres]
+        
+        QUERY[💡 Query Generation Agent<br/>GPT-4o<br/>---<br/>Generates Priority Queries<br/>for Each Entity]
+        
+        subgraph "Deep Research Swarm"
+            WEB_RES[🌐 Web Search Agent<br/>SerpAPI<br/>---<br/>General Web Research<br/>High Coverage]
+            WIKI[📚 Wikipedia Agent<br/>Wikipedia API<br/>---<br/>Biographical Info<br/>Historical Context]
+            NEWS[📰 News Agent<br/>News API<br/>---<br/>Recent Articles<br/>Current Relevance]
+            MUSIC[🎵 Music Research Agent<br/>MusicBrainz/Last.fm<br/>---<br/>Discography<br/>Collaborations]
+        end
+        
+        SYNTH[✨ Knowledge Synthesis Agent<br/>GPT-4o<br/>---<br/>Synthesizes Findings<br/>Creates Narrative<br/>Extracts Key Insights]
+    end
+    
+    subgraph "Enhanced Promo Generation"
+        PROMO_ENH[🎤 Enhanced Promo Generator<br/>GPT-4o<br/>---<br/>Uses Research Insights<br/>Rich Storytelling<br/>Context-Aware]
+    end
+    
+    subgraph "Review Swarm"
+        REV1[Web Search Enricher]
+        REV2[Content Enricher]
+        REV3[Relevance Scorer]
+        REV4[Date Verifier]
+    end
+    
+    subgraph "Search Agents"
+        SEARCH1[Ticketmaster]
+        SEARCH2[Meetup]
+        SEARCH3[SerpAPI]
+    end
+    
+    %% Flow
+    PLANNING -->|Phase: SEARCHING| SEARCH1
+    PLANNING -->|Phase: SEARCHING| SEARCH2
+    PLANNING -->|Phase: SEARCHING| SEARCH3
+    
+    SEARCH1 -->|Events| PLANNING
+    SEARCH2 -->|Events| PLANNING
+    SEARCH3 -->|Events| PLANNING
+    
+    PLANNING -->|Phase: REVIEWING| REV1
+    PLANNING -->|Phase: REVIEWING| REV2
+    PLANNING -->|Phase: REVIEWING| REV3
+    PLANNING -->|Phase: REVIEWING| REV4
+    
+    REV1 -->|Enriched| PLANNING
+    REV2 -->|Enriched| PLANNING
+    REV3 -->|Enriched| PLANNING
+    REV4 -->|Enriched| PLANNING
+    
+    PLANNING -->|Phase: RESEARCHING<br/>For Each Event| ENTITY
+    ENTITY -->|Entities| QUERY
+    QUERY -->|Research Queries| WEB_RES
+    QUERY -->|Research Queries| WIKI
+    QUERY -->|Research Queries| NEWS
+    QUERY -->|Research Queries| MUSIC
+    
+    WEB_RES -->|Facts + Sources| SYNTH
+    WIKI -->|Biographical Data| SYNTH
+    NEWS -->|Recent Context| SYNTH
+    MUSIC -->|Domain Info| SYNTH
+    
+    SYNTH -->|EventResearch<br/>Narrative + Insights| PLANNING
+    
+    PLANNING -->|Phase: SYNTHESIZING<br/>Events + Research| PROMO_ENH
+    PROMO_ENH -->|Enhanced Promo| PLANNING
+    
+    %% Styling
+    classDef planning fill:#ff6b6b,stroke:#c92a2a,color:#fff,stroke-width:3px
+    classDef research fill:#ffd93d,stroke:#f08c00,color:#000,stroke-width:3px
+    classDef synthesis fill:#a8e6cf,stroke:#25a55f,color:#000,stroke-width:3px
+    classDef swarm fill:#95e1d3,stroke:#087f5b,color:#000,stroke-width:2px
+    
+    class PLANNING planning
+    class ENTITY,QUERY research
+    class WEB_RES,WIKI,NEWS,MUSIC swarm
+    class SYNTH,PROMO_ENH synthesis
+
