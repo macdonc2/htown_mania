@@ -1053,7 +1053,14 @@
                                             <span class="comic-burst">💥</span>
                                         </div>
                                         <div class="mean-gene-content">
-                                            <strong>Hold on just a minute!</strong> Ladies and gentlemen, what we're witnessing here is <strong>UNPRECEDENTED</strong> levels of excitement! The Macho Man is on a roll, and Houston better be ready for the <strong>CREAM OF THE CROP!</strong>
+                                            {% set gene_quotes = [
+                                                "<strong>Hold on just a minute!</strong> Ladies and gentlemen, what we're witnessing here is <strong>UNPRECEDENTED</strong> levels of excitement! The Macho Man is on a roll, and Houston better be ready for the <strong>CREAM OF THE CROP!</strong>",
+                                                "<strong>Wait a second!</strong> I've been in this business for decades, and I've NEVER seen this kind of <strong>INTENSITY!</strong> The Macho Man is bringing the <strong>MADNESS</strong> to the Lone Star State!",
+                                                "<strong>Unbelievable!</strong> The energy here is <strong>ELECTRIC!</strong> Randy Savage is laying it all on the line for Houston, and folks, this is what <strong>CHAMPIONSHIP CALIBER</strong> looks like!",
+                                                "<strong>Listen to this!</strong> The Macho Man is pulling out all the stops! Houston's in for a treat, and let me tell you, this is <strong>MUST-SEE</strong> entertainment!",
+                                                "<strong>Hold everything!</strong> What we're seeing here is the <strong>EPITOME</strong> of showmanship! Randy Savage is giving Houston 110%, and that's what separates the <strong>LEGENDS</strong> from the rest!"
+                                            ] %}
+                                            {{ gene_quotes[loop.index0 % gene_quotes|length] }}
                                             <div class="mean-gene-signature">— Mean Gene 🎤</div>
                                             <div class="speech-bubble-tail"></div>
                                         </div>
@@ -1109,7 +1116,14 @@
                                             <span class="comic-burst">🚀</span>
                                         </div>
                                         <div class="mean-gene-content">
-                                            <strong>Incredible!</strong> The Warrior's energy is <strong>OFF THE CHARTS!</strong> I've never seen anything like this in all my years of broadcasting! The <strong>DESTRUCITY</strong> is real, folks!
+                                            {% set warrior_quotes = [
+                                                "<strong>Incredible!</strong> The Warrior's energy is <strong>OFF THE CHARTS!</strong> I've never seen anything like this in all my years of broadcasting! The <strong>DESTRUCITY</strong> is real, folks!",
+                                                "<strong>Good gracious!</strong> The Ultimate Warrior is tapping into a power <strong>BEYOND COMPREHENSION!</strong> Houston, you're about to witness something <strong>OTHERWORLDLY!</strong>",
+                                                "<strong>Unreal!</strong> The intensity from the Warrior is like nothing I've ever encountered! This is <strong>COSMIC ENERGY</strong> at its finest, and Houston's in the epicenter!",
+                                                "<strong>My word!</strong> The Warrior's on a different plane of existence! The <strong>ROCKET FUEL</strong> is flowing, and Houston better buckle up for this <strong>INTERGALACTIC RIDE!</strong>",
+                                                "<strong>Astounding!</strong> I'm standing next to pure <strong>WARRIOR POWER!</strong> This isn't just an event, folks - this is a <strong>DIMENSIONAL SHIFT</strong> happening right here in Space City!"
+                                            ] %}
+                                            {{ warrior_quotes[loop.index0 % warrior_quotes|length] }}
                                             <div class="mean-gene-signature">— Mean Gene 🎤</div>
                                             <div class="speech-bubble-tail"></div>
                                         </div>
