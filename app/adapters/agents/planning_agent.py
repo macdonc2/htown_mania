@@ -54,11 +54,23 @@ class PlanningAgent(PlanningAgentPort):
         search_agents: List[SearchAgentPort],
         review_agents: List[ReviewAgentPort],
         promo_agent: PromoAgentPort,
-        model: str = "gpt-4o"
+        model: str = "gpt-4o",
+        # Deep research components (optional)
+        entity_extractor = None,
+        query_generator = None,
+        web_search_agent = None,
+        knowledge_synthesizer = None
     ):
         self.search_agents = search_agents
         self.review_agents = review_agents
         self.promo_agent = promo_agent
+        
+        # Deep research agents (optional)
+        self.entity_extractor = entity_extractor
+        self.query_generator = query_generator
+        self.web_search_agent = web_search_agent
+        self.knowledge_synthesizer = knowledge_synthesizer
+        self.research_enabled = all([entity_extractor, query_generator, web_search_agent, knowledge_synthesizer])
         
         # Set API key in environment for PydanticAI
         import os
@@ -135,6 +147,9 @@ Always provide clear reasoning for your decisions.
                 
                 elif state.phase == AgentPhase.REVIEWING:
                     state = await self._review_phase(state)
+                
+                elif state.phase == AgentPhase.RESEARCHING:
+                    state = await self._research_phase(state)
                 
                 elif state.phase == AgentPhase.SYNTHESIZING:
                     state = await self._synthesize_phase(state)
@@ -293,14 +308,25 @@ Always provide clear reasoning for your decisions.
         
         # Decide next phase
         if avg_confidence > 0.6:
-            state.add_observation(
-                agent="PlanningAgent",
-                thought="Data quality is sufficient. Ready to generate promo.",
-                action="transition_to_synthesize",
-                result="Moving to SYNTHESIZING phase",
-                confidence=0.95
-            )
-            state.phase = AgentPhase.SYNTHESIZING
+            # Check if deep research is enabled
+            if self.research_enabled and state.research_enabled:
+                state.add_observation(
+                    agent="PlanningAgent",
+                    thought="Data quality good. Will run deep research for richer context.",
+                    action="transition_to_research",
+                    result="Moving to RESEARCHING phase",
+                    confidence=0.95
+                )
+                state.phase = AgentPhase.RESEARCHING
+            else:
+                state.add_observation(
+                    agent="PlanningAgent",
+                    thought="Data quality is sufficient. Ready to generate promo.",
+                    action="transition_to_synthesize",
+                    result="Moving to SYNTHESIZING phase",
+                    confidence=0.95
+                )
+                state.phase = AgentPhase.SYNTHESIZING
         else:
             state.add_observation(
                 agent="PlanningAgent",
@@ -311,6 +337,138 @@ Always provide clear reasoning for your decisions.
             )
             state.phase = AgentPhase.SYNTHESIZING
         
+        return state
+    
+    async def _research_phase(self, state: PlanningState) -> PlanningState:
+        """Execute the deep research phase (optional)."""
+        
+        if not self.research_enabled:
+            # Skip research if not enabled
+            state.add_observation(
+                agent="PlanningAgent",
+                thought="Research not enabled, skipping to synthesis.",
+                action="skip_research",
+                result="Moving to SYNTHESIZING phase",
+                confidence=1.0
+            )
+            state.phase = AgentPhase.SYNTHESIZING
+            return state
+        
+        state.add_observation(
+            agent="PlanningAgent",
+            thought=f"Starting deep research on {len(state.events_reviewed)} verified events.",
+            action="invoke_research_pipeline",
+            confidence=1.0
+        )
+        
+        print(f"🔬 RESEARCHING PHASE: Deep research on {len(state.events_reviewed)} events...")
+        
+        # Import research models
+        from app.core.domain.research_models import ResearchQuery, EventResearch
+        
+        import asyncio
+        
+        async def research_single_event(enriched):
+            """Research a single event."""
+            event = enriched.event
+            
+            # Step 1: Extract entities
+            entities = await self.entity_extractor.extract_entities(event)
+            
+            state.add_observation(
+                agent="EntityExtractionAgent",
+                thought=f"Analyzing '{event.title}'",
+                action="extract_entities",
+                result=f"Found {len(entities)} entities",
+                confidence=0.9
+            )
+            
+            # Step 2: Generate targeted research queries using AI
+            queries = await self.query_generator.generate_queries(event, entities)
+            
+            state.add_observation(
+                agent="QueryGenerationAgent",
+                thought=f"Formulating research strategy for {len(entities)} entities",
+                action="generate_queries",
+                result=f"Generated {len(queries)} targeted queries (priorities: {[q.priority for q in queries[:5]]})",
+                confidence=0.95
+            )
+            
+            # Step 3: Research with web search
+            results = []
+            for query in queries:
+                result = await self.web_search_agent.research(query)
+                results.append(result)
+                
+                if result.confidence > 0:
+                    state.add_observation(
+                        agent="WebSearchAgent",
+                        thought=f"Researching '{query.query}'",
+                        action="web_search",
+                        result=f"Found {len(result.facts)} facts",
+                        confidence=result.confidence
+                    )
+            
+            # Step 4: Synthesize knowledge
+            event_research = await self.knowledge_synthesizer.synthesize(
+                event=event,
+                entities=entities,
+                research_results=results
+            )
+            
+            state.add_observation(
+                agent="KnowledgeSynthesisAgent",
+                thought=f"Synthesizing research for '{event.title}'",
+                action="synthesize_knowledge",
+                result=f"Created narrative with {len(event_research.key_insights)} insights",
+                confidence=event_research.overall_confidence
+            )
+            
+            return event_research
+        
+        # Research events in batches (5 at a time)
+        semaphore = asyncio.Semaphore(5)
+        
+        async def research_with_limit(enriched):
+            async with semaphore:
+                try:
+                    return await research_single_event(enriched)
+                except Exception as e:
+                    print(f"Research failed for {enriched.event.title}: {e}")
+                    # Return minimal research
+                    from app.core.domain.research_models import EventResearch
+                    return EventResearch(
+                        event_title=enriched.event.title,
+                        entities=[],
+                        queries=[],
+                        results=[],
+                        synthesized_narrative=enriched.event.description or enriched.event.title,
+                        key_insights=[],
+                        overall_confidence=0.5
+                    )
+        
+        # Research all events
+        events_researched = await asyncio.gather(
+            *[research_with_limit(e) for e in state.events_reviewed]
+        )
+        
+        state.events_researched = events_researched
+        
+        # Summary statistics
+        total_entities = sum(len(er.entities) for er in events_researched)
+        total_facts = sum(len(r.facts) for r in sum([er.results for er in events_researched], []))
+        avg_confidence = sum(er.overall_confidence for er in events_researched) / len(events_researched) if events_researched else 0
+        
+        state.add_observation(
+            agent="PlanningAgent",
+            thought="Deep research complete. Rich context gathered.",
+            action="analyze_research_results",
+            result=f"Researched {len(events_researched)} events: {total_entities} entities, {total_facts} facts, conf={avg_confidence:.2f}",
+            confidence=avg_confidence
+        )
+        
+        # Move to synthesis
+        state.phase = AgentPhase.SYNTHESIZING
         return state
     
     async def _synthesize_phase(self, state: PlanningState) -> PlanningState:
@@ -326,7 +484,8 @@ Always provide clear reasoning for your decisions.
         print("🎤 Generating wrestling promo...")
         promo_result = await self.promo_agent.generate_promo(
             events=state.events_reviewed,
-            planning_context=state
+            planning_context=state,
+            research_results=state.events_researched  # Pass research results!
         )
         
         state.promo_generated = promo_result.promo_text

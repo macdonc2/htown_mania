@@ -9,12 +9,20 @@ from pydantic import BaseModel, Field, HttpUrl
 
 from app.core.domain.models import Event
 
+# Forward reference for research models
+try:
+    from app.core.domain.research_models import EventResearch, ResearchState
+except ImportError:
+    EventResearch = None  # type: ignore
+    ResearchState = None  # type: ignore
+
 
 class AgentPhase(str, Enum):
     """Phases of the agentic workflow."""
     INITIALIZING = "initializing"
     SEARCHING = "searching"
     REVIEWING = "reviewing"
+    RESEARCHING = "researching"  # NEW: Deep research phase
     SYNTHESIZING = "synthesizing"
     COMPLETE = "complete"
     FAILED = "failed"
@@ -68,6 +76,10 @@ class PlanningState(BaseModel):
     
     # Planning
     questions_to_investigate: List[Question] = []
+    
+    # Research phase (deep research mode)
+    events_researched: List[Any] = []  # List[EventResearch] when imported
+    research_enabled: bool = False
     
     # Synthesis
     promo_generated: Optional[str] = None

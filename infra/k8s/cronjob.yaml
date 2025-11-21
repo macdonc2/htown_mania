@@ -14,7 +14,7 @@ spec:
           containers:
             - name: worker
               image: htownmaniaacr.azurecr.io/houston-event-mania:latest
-              command: ["python", "-m", "app.workers.run_daily_job", "--agentic"]
+              command: ["python", "-m", "app.workers.run_daily_job", "--deep-research"]
               envFrom:
                 - secretRef:
                     name: houston-event-mania-secrets

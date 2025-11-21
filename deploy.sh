@@ -1,11 +1,11 @@
 #!/bin/bash
-# 🚀 Houston Event Mania - Agentic Deployment Script
+# 🚀 Houston Event Mania - Deep Research Deployment Script
 # UNLEASH THE POWER! 💪🔥
 
 set -e  # Exit on error
 
 echo "=========================================="
-echo "🤖 HOUSTON EVENT MANIA - AGENTIC DEPLOYMENT"
+echo "🔬 HOUSTON EVENT MANIA - DEEP RESEARCH DEPLOYMENT"
 echo "=========================================="
 echo ""
 
@@ -38,8 +38,10 @@ echo "✅ Authenticated with ACR"
 # Step 3: Build Docker image
 echo ""
 echo "🏗️  Step 3: Building Docker image..."
+echo "   Platform: linux/amd64 (for Kubernetes compatibility)"
 echo "   This may take a few minutes..."
 docker build -f infra/docker/Dockerfile \
+    --platform linux/amd64 \
     -t ${ACR_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
     -t ${ACR_REGISTRY}/${IMAGE_NAME}:latest \
     .
