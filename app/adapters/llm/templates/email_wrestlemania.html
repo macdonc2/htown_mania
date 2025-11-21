@@ -30,12 +30,24 @@
         
         /* HEADER - WRESTLEMANIA STYLE */
         .header {
-            background: linear-gradient(45deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+            background: 
+                linear-gradient(45deg, 
+                    #FFD700 0%, 
+                    #FF4500 15%,
+                    #FFD700 30%,
+                    #FFA500 50%, 
+                    #FFD700 70%,
+                    #FF4500 85%,
+                    #FFD700 100%);
             padding: 30px 20px;
             text-align: center;
             border-bottom: 5px solid #FF0000;
+            border-top: 5px solid #FF4500;
             position: relative;
             overflow: hidden;
+            box-shadow: 
+                inset 0 0 50px rgba(255, 69, 0, 0.3),
+                0 10px 30px rgba(255, 0, 0, 0.4);
         }
         
         .header::before {
@@ -45,13 +57,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(255, 255, 255, 0.1) 10px,
-                rgba(255, 255, 255, 0.1) 20px
-            );
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.15) 10px,
+                    rgba(255, 255, 255, 0.15) 20px
+                ),
+                radial-gradient(circle at 30% 30%, rgba(255, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255, 140, 0, 0.2) 0%, transparent 50%);
             pointer-events: none;
         }
         
@@ -89,9 +104,37 @@
         
         /* PROMO SECTION - MACHO MAN STYLE */
         .promo-section {
-            background: linear-gradient(180deg, #1a0000 0%, #000 100%);
-            padding: 40px 30px;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(255, 140, 0, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, #1a0000 0%, #000 50%, #1a0000 100%);
+            padding: 25px 20px;
             border-bottom: 3px solid #FFD700;
+            border-top: 3px solid #FF4500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .promo-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                #FF0000 0%, #FF4500 25%, #FFD700 50%, #FF4500 75%, #FF0000 100%);
+        }
+        
+        .promo-section::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                #FF0000 0%, #FF4500 25%, #FFD700 50%, #FF4500 75%, #FF0000 100%);
         }
         
         .promo-title {
@@ -100,25 +143,574 @@
             text-align: center;
             margin-bottom: 30px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 4px #FF0000;
+            text-shadow: 
+                2px 2px 0 #FF0000,
+                4px 4px 0 #FF4500,
+                6px 6px 10px rgba(255, 0, 0, 0.8);
             letter-spacing: 2px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .promo-content {
             font-size: 16px;
-            line-height: 1.8;
+            line-height: 1.9;
             color: #fff;
             white-space: pre-wrap;
             font-family: 'Courier New', Courier, monospace;
-            background: rgba(255, 215, 0, 0.05);
-            padding: 25px;
-            border-left: 5px solid #FFD700;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255, 69, 0, 0.08) 0%, 
+                    rgba(0, 0, 0, 0.3) 25%,
+                    rgba(255, 140, 0, 0.08) 50%,
+                    rgba(0, 0, 0, 0.3) 75%,
+                    rgba(255, 69, 0, 0.08) 100%);
+            padding: 30px;
+            border-left: 5px solid #FF4500;
+            border-right: 5px solid #FFD700;
+            border-radius: 8px;
+            box-shadow: 
+                inset 0 0 30px rgba(255, 69, 0, 0.15),
+                0 5px 25px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+        
+        .promo-content::before {
+            content: "💪";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 40px;
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .promo-content::after {
+            content: "🎤";
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 40px;
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Neon glow effect for emphasis text */
+        .promo-content strong,
+        .promo-content b {
+            color: #FF4500;
+            text-shadow: 
+                0 0 5px #FF4500,
+                0 0 10px #FF4500,
+                0 0 15px #FF0000;
+            font-weight: bold;
+        }
+        
+        .promo-content em,
+        .promo-content i {
+            color: #FFD700;
+            font-style: italic;
+            text-shadow: 0 0 8px #FFA500;
+        }
+        
+        /* ULTIMATE WARRIOR SECTION - COSMIC DIMENSIONS! */
+        .warrior-section {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(148, 0, 211, 0.15) 0%, transparent 60%),
+                linear-gradient(135deg, 
+                    rgba(75, 0, 130, 0.15) 0%, 
+                    rgba(0, 0, 0, 0.3) 25%,
+                    rgba(138, 43, 226, 0.15) 50%,
+                    rgba(0, 0, 0, 0.3) 75%,
+                    rgba(75, 0, 130, 0.15) 100%) !important;
+            border-left: 5px solid #8B00FF !important;
+            border-right: 5px solid #9400D3 !important;
+            box-shadow: 
+                inset 0 0 50px rgba(138, 43, 226, 0.2),
+                0 5px 30px rgba(138, 43, 226, 0.3),
+                0 0 40px rgba(148, 0, 211, 0.2) !important;
+            position: relative;
+            margin-top: 30px;
+            padding: 35px !important;
+            animation: cosmic-pulse 3s ease-in-out infinite;
+        }
+        
+        .warrior-section::before {
+            content: "⚡";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 40px;
+            opacity: 0.4;
+            animation: warrior-float 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px #8B00FF);
+        }
+        
+        .warrior-section::after {
+            content: "🚀";
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 40px;
+            opacity: 0.4;
+            animation: warrior-float 2s ease-in-out infinite;
+            animation-delay: 1s;
+            filter: drop-shadow(0 0 10px #9400D3);
+        }
+        
+        @keyframes cosmic-pulse {
+            0%, 100% {
+                box-shadow: 
+                    inset 0 0 50px rgba(138, 43, 226, 0.2),
+                    0 5px 30px rgba(138, 43, 226, 0.3),
+                    0 0 40px rgba(148, 0, 211, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    inset 0 0 60px rgba(138, 43, 226, 0.3),
+                    0 5px 35px rgba(138, 43, 226, 0.5),
+                    0 0 50px rgba(148, 0, 211, 0.4);
+            }
+        }
+        
+        @keyframes warrior-float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateY(-15px) rotate(10deg);
+                opacity: 0.6;
+            }
+        }
+        
+        .warrior-section strong,
+        .warrior-section b {
+            color: #9400D3 !important;
+            text-shadow: 
+                0 0 8px #8B00FF,
+                0 0 15px #8B00FF,
+                0 0 20px #9400D3 !important;
+            font-weight: bold;
+        }
+        
+        .warrior-section em,
+        .warrior-section i {
+            color: #BA55D3 !important;
+            font-style: italic;
+            text-shadow: 0 0 10px #8B00FF !important;
+        }
+        
+        /* SECTION DIVIDER - PORTAL BETWEEN DIMENSIONS */
+        .promo-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            position: relative;
+            height: 50px;
+        }
+        
+        .promo-divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                #FF0000 10%,
+                #FF4500 20%,
+                #FFD700 30%,
+                #8B00FF 50%,
+                #9400D3 70%,
+                #BA55D3 80%,
+                transparent 100%);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+        }
+        
+        .promo-divider-icon {
+            background: linear-gradient(135deg, #FFD700 0%, #FF4500 50%, #8B00FF 100%);
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            z-index: 1;
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.5),
+                0 0 30px rgba(138, 43, 226, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: portal-spin 4s linear infinite;
+        }
+        
+        @keyframes portal-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        /* WARRIOR HEADER */
+        .warrior-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #9400D3;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px 0 15px 0;
+            padding: 10px;
+            text-shadow: 
+                2px 2px 0 #8B00FF,
+                4px 4px 0 #BA55D3,
+                6px 6px 15px rgba(138, 43, 226, 0.8),
+                0 0 30px rgba(148, 0, 211, 0.8);
+            background: linear-gradient(45deg, #9400D3, #BA55D3, #8B00FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* MACHO MAN COMIC PANEL */
+        .promo-paragraph {
+            margin-bottom: 15px;
+            padding: 0;
+            position: relative;
+        }
+        
+        .macho-panel {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 69, 0, 0.05) 0px,
+                    rgba(255, 69, 0, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 69, 0, 0.05) 0px,
+                    rgba(255, 69, 0, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                linear-gradient(135deg, 
+                    rgba(255, 215, 0, 0.15) 0%, 
+                    rgba(255, 69, 0, 0.1) 50%,
+                    rgba(255, 215, 0, 0.15) 100%);
+            border: 4px solid #FFD700;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            box-shadow: 
+                0 4px 10px rgba(255, 69, 0, 0.3),
+                inset 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+        
+        .macho-panel::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid #FF4500;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        
+        .macho-bubble {
+            background: rgba(255, 255, 255, 0.95);
+            color: #000;
+            padding: 15px;
+            border: 3px solid #000;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 
+                3px 3px 0 rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(255, 215, 0, 0.15);
+            white-space: pre-wrap;
+        }
+        
+        .macho-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700 0%, #FF4500 100%);
+            color: #000;
+            padding: 4px 12px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                2px 2px 0 rgba(0, 0, 0, 0.4),
+                0 0 10px rgba(255, 69, 0, 0.4);
+            margin-bottom: 8px;
+        }
+        
+        /* WARRIOR COMIC PANEL */
+        .warrior-panel {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(138, 43, 226, 0.05) 0px,
+                    rgba(138, 43, 226, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(138, 43, 226, 0.05) 0px,
+                    rgba(138, 43, 226, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                radial-gradient(circle at 30% 30%, rgba(138, 43, 226, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, 
+                    rgba(138, 43, 226, 0.15) 0%, 
+                    rgba(75, 0, 130, 0.1) 50%,
+                    rgba(148, 0, 211, 0.15) 100%);
+            border: 4px solid #9400D3;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            box-shadow: 
+                0 4px 10px rgba(138, 43, 226, 0.4),
+                inset 0 0 15px rgba(138, 43, 226, 0.1);
+        }
+        
+        .warrior-panel::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid #8B00FF;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        
+        .warrior-bubble {
+            background: rgba(255, 255, 255, 0.95);
+            color: #000;
+            padding: 15px;
+            border: 3px solid #000;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 
+                3px 3px 0 rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(138, 43, 226, 0.15);
+            white-space: pre-wrap;
+        }
+        
+        .warrior-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #9400D3 0%, #BA55D3 100%);
+            color: #FFD700;
+            padding: 4px 12px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                2px 2px 0 rgba(0, 0, 0, 0.4),
+                0 0 10px rgba(138, 43, 226, 0.5);
+            margin-bottom: 8px;
+        }
+        
+        /* Comic emphasis for all speech bubbles */
+        .macho-bubble strong,
+        .warrior-bubble strong {
+            color: #FF0000;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .macho-bubble em,
+        .warrior-bubble em {
+            color: #FF4500;
+            font-style: italic;
+        }
+        
+        /* MEAN GENE COMIC BOOK PANEL */
+        .mean-gene-panel {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 0, 0.05) 0px,
+                    rgba(255, 255, 0, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 0, 0.05) 0px,
+                    rgba(255, 255, 0, 0.05) 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border: 4px solid #000;
+            border-radius: 12px;
+            margin: 20px 0;
+            padding: 15px;
+            position: relative;
+            box-shadow: 
+                0 5px 12px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        .mean-gene-panel::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid #FF0000;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        
+        .mean-gene-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .mean-gene-badge {
+            background: #FF0000;
+            color: #FFD700;
+            padding: 5px 15px;
+            border: 3px solid #000;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                3px 3px 0 rgba(0, 0, 0, 0.4),
+                0 0 12px rgba(255, 0, 0, 0.5);
+            transform: rotate(-2deg);
+        }
+        
+        .comic-burst {
+            font-size: 24px;
+            animation: burst-pop 1s ease-in-out infinite;
+        }
+        
+        @keyframes burst-pop {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+        
+        .mean-gene-content {
+            background: #fff;
+            color: #000;
+            padding: 15px;
+            border: 3px solid #000;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 
+                3px 3px 0 rgba(0, 0, 0, 0.3),
+                inset 0 0 12px rgba(255, 215, 0, 0.15);
+        }
+        
+        .mean-gene-content::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 80px;
+            color: #FF0000;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .mean-gene-content strong {
+            color: #FF0000;
+            text-transform: uppercase;
+        }
+        
+        .mean-gene-signature {
+            text-align: right;
+            margin-top: 15px;
+            font-style: italic;
+            font-weight: bold;
+            color: #000;
+            font-size: 14px;
+        }
+        
+        /* SPEECH BUBBLE TAIL */
+        .speech-bubble-tail {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #fff;
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .speech-bubble-tail::before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 24px solid transparent;
+            border-right: 24px solid transparent;
+            border-top: 34px solid #000;
+            top: -34px;
+            left: -24px;
+        }
+        
+        /* COMIC BOOK EFFECTS */
+        .comic-emphasis {
+            display: inline-block;
+            background: #FF0000;
+            color: #FFD700;
+            padding: 2px 8px;
+            border: 2px solid #000;
             border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+            margin: 0 3px;
         }
         
         /* EVENT CARDS - MATCH CARD STYLE */
         .events-section {
-            padding: 40px 20px;
+            padding: 25px 15px;
             background: #0a0a0a;
         }
         
@@ -128,19 +720,37 @@
             text-align: center;
             margin-bottom: 30px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 4px #FF0000;
+            text-shadow: 
+                2px 2px 0 #FF0000,
+                4px 4px 0 #FF4500,
+                6px 6px 10px rgba(255, 0, 0, 0.8),
+                0 0 20px rgba(255, 69, 0, 0.8),
+                0 0 30px rgba(255, 215, 0, 0.6);
             letter-spacing: 3px;
-            border-bottom: 3px solid #FFD700;
+            border-bottom: 5px solid transparent;
+            border-image: linear-gradient(90deg, 
+                transparent 0%,
+                #FF0000 10%,
+                #FF4500 30%,
+                #FFD700 50%,
+                #FF4500 70%,
+                #FF0000 90%,
+                transparent 100%) 1;
             padding-bottom: 15px;
         }
         
         .event-card {
-            background: linear-gradient(135deg, #1a0000 0%, #000 100%);
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #1a0000 0%, #000 50%, #0a0000 100%);
             border: 3px solid #FFD700;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 18px;
+            box-shadow: 
+                0 4px 12px rgba(255, 215, 0, 0.3),
+                inset 0 0 20px rgba(255, 69, 0, 0.05),
+                0 0 15px rgba(255, 69, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -151,27 +761,36 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 8px;
             height: 100%;
-            background: linear-gradient(180deg, #FF0000 0%, #FFD700 50%, #FF0000 100%);
+            background: linear-gradient(180deg, 
+                #FF0000 0%, 
+                #FF4500 15%,
+                #FFD700 50%, 
+                #FF4500 85%,
+                #FF0000 100%);
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.8);
         }
         
         .event-number {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #FFD700;
+            background: linear-gradient(135deg, #FFD700 0%, #FF4500 100%);
             color: #000;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             border: 3px solid #FF0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            box-shadow: 
+                0 0 15px rgba(255, 69, 0, 0.8),
+                0 0 25px rgba(255, 0, 0, 0.6),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .event-title {
@@ -180,7 +799,11 @@
             margin-bottom: 15px;
             margin-right: 50px;
             text-transform: uppercase;
-            text-shadow: 1px 1px 2px #FF0000;
+            text-shadow: 
+                1px 1px 0 #FF0000,
+                2px 2px 0 #FF4500,
+                3px 3px 5px rgba(255, 0, 0, 0.8),
+                0 0 10px rgba(255, 69, 0, 0.6);
             letter-spacing: 1px;
         }
         
@@ -221,43 +844,58 @@
         .event-link {
             display: inline-block;
             margin-top: 15px;
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #FFD700 0%, #FFA500 100%);
+            padding: 14px 30px;
+            background: linear-gradient(45deg, 
+                #FFD700 0%, 
+                #FF4500 50%, 
+                #FFD700 100%);
             color: #000;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 8px;
             text-transform: uppercase;
             font-size: 14px;
-            letter-spacing: 1px;
-            border: 2px solid #FF0000;
-            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+            letter-spacing: 2px;
+            border: 3px solid #FF0000;
+            box-shadow: 
+                0 5px 15px rgba(255, 69, 0, 0.6),
+                0 0 20px rgba(255, 215, 0, 0.4),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .event-categories {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             margin-top: 15px;
         }
         
         .category-badge {
-            background: #FF0000;
+            background: linear-gradient(135deg, 
+                #FF0000 0%, 
+                #FF4500 50%, 
+                #FF0000 100%);
             color: #FFD700;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border: 1px solid #FFD700;
+            border: 2px solid #FFD700;
+            box-shadow: 
+                0 2px 8px rgba(255, 0, 0, 0.5),
+                0 0 10px rgba(255, 69, 0, 0.4),
+                inset 0 0 5px rgba(255, 215, 0, 0.2);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
         
         /* SCRATCHPAD SECTION */
         .scratchpad-section {
             background: #0a0a0a;
-            padding: 40px 30px;
+            padding: 25px 20px;
             border-top: 3px solid #FFD700;
         }
         
@@ -292,10 +930,21 @@
         
         /* FOOTER */
         .footer {
-            background: linear-gradient(45deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 140, 0, 0.2) 0%, transparent 50%),
+                linear-gradient(45deg, 
+                    #FFD700 0%, 
+                    #FF4500 20%,
+                    #FFA500 50%, 
+                    #FF4500 80%,
+                    #FFD700 100%);
             padding: 30px 20px;
             text-align: center;
             border-top: 5px solid #FF0000;
+            box-shadow: 
+                inset 0 0 50px rgba(255, 69, 0, 0.3),
+                0 -10px 30px rgba(255, 0, 0, 0.4);
         }
         
         .footer-text {
@@ -304,7 +953,9 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            text-shadow: 
+                1px 1px 0 rgba(255, 255, 255, 0.8),
+                2px 2px 5px rgba(255, 0, 0, 0.5);
             margin-bottom: 15px;
         }
         
@@ -313,10 +964,31 @@
             color: #8B0000;
             text-shadow: 
                 2px 2px 0 #000,
-                -1px -1px 0 #000,
-                1px -1px 0 #000,
-                -1px 1px 0 #000;
+                4px 4px 0 #FF0000,
+                6px 6px 0 #FF4500,
+                8px 8px 15px rgba(255, 0, 0, 0.8),
+                0 0 20px rgba(255, 69, 0, 0.8);
             margin: 15px 0;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 
+                    2px 2px 0 #000,
+                    4px 4px 0 #FF0000,
+                    6px 6px 0 #FF4500,
+                    8px 8px 15px rgba(255, 0, 0, 0.8),
+                    0 0 20px rgba(255, 69, 0, 0.8);
+            }
+            50% {
+                text-shadow: 
+                    2px 2px 0 #000,
+                    4px 4px 0 #FF0000,
+                    6px 6px 0 #FF4500,
+                    8px 8px 15px rgba(255, 0, 0, 1.0),
+                    0 0 30px rgba(255, 69, 0, 1.0);
+            }
         }
         
         /* RESPONSIVE */
@@ -354,7 +1026,117 @@
             <div class="promo-title">
                 🎤 THE MACHO MAN & ULTIMATE WARRIOR PRESENT 🎤
             </div>
-            <div class="promo-content">{{ promo_text }}</div>
+            
+            {% if promo_text %}
+                {% set promo_parts = promo_text.split('ULTIMATE WARRIOR') %}
+                {% if promo_parts|length > 1 %}
+                    {# Split detected - Macho Man first, then Warrior #}
+                    
+                    {# MACHO MAN SECTION - SUBDIVIDED WITH COMIC PANELS #}
+                    <div class="promo-content">
+                        {% set macho_paragraphs = promo_parts[0].split('\n\n') %}
+                        {% for paragraph in macho_paragraphs %}
+                            {% if paragraph.strip() %}
+                                <div class="promo-paragraph">
+                                    <div class="macho-panel">
+                                        <div class="macho-badge">🎤 MACHO MAN RANDY SAVAGE</div>
+                                        <div class="macho-bubble">{{ paragraph }}</div>
+                                    </div>
+                                </div>
+                                
+                                {# Insert Mean Gene after every 2-3 paragraphs #}
+                                {% if loop.index % 2 == 0 and not loop.last %}
+                                    <div class="mean-gene-panel">
+                                        <div class="mean-gene-header">
+                                            <span class="comic-burst">💥</span>
+                                            <span class="mean-gene-badge">MEAN GENE OKERLUND</span>
+                                            <span class="comic-burst">💥</span>
+                                        </div>
+                                        <div class="mean-gene-content">
+                                            <strong>Hold on just a minute!</strong> Ladies and gentlemen, what we're witnessing here is <strong>UNPRECEDENTED</strong> levels of excitement! The Macho Man is on a roll, and Houston better be ready for the <strong>CREAM OF THE CROP!</strong>
+                                            <div class="mean-gene-signature">— Mean Gene 🎤</div>
+                                            <div class="speech-bubble-tail"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    {# DIMENSIONAL PORTAL DIVIDER #}
+                    <div class="promo-divider">
+                        <div class="promo-divider-icon">⚡🚀</div>
+                    </div>
+                    
+                    {# MEAN GENE TRANSITION PANEL #}
+                    <div class="mean-gene-panel">
+                        <div class="mean-gene-header">
+                            <span class="comic-burst">💥</span>
+                            <span class="mean-gene-badge">MEAN GENE BREAKING NEWS</span>
+                            <span class="comic-burst">💥</span>
+                        </div>
+                        <div class="mean-gene-content">
+                            <strong>Wait a second, folks!</strong> I'm getting word that the <strong>ULTIMATE WARRIOR</strong> has something to say! The intensity is about to go through the ROOF! Let's hear from the Warrior himself!
+                            <div class="mean-gene-signature">— Mean Gene 🎤</div>
+                            <div class="speech-bubble-tail"></div>
+                        </div>
+                    </div>
+                    
+                    {# ULTIMATE WARRIOR HEADER #}
+                    <div class="warrior-header">
+                        ⚡ ULTIMATE WARRIOR - PORTAL TO THE DIMENSIONS ⚡
+                    </div>
+                    
+                    {# ULTIMATE WARRIOR SECTION - SUBDIVIDED WITH COMIC PANELS #}
+                    <div class="promo-content warrior-section">
+                        {% set warrior_text = 'ULTIMATE WARRIOR' + promo_parts[1] %}
+                        {% set warrior_paragraphs = warrior_text.split('\n\n') %}
+                        {% for paragraph in warrior_paragraphs %}
+                            {% if paragraph.strip() %}
+                                <div class="promo-paragraph">
+                                    <div class="warrior-panel">
+                                        <div class="warrior-badge">⚡ ULTIMATE WARRIOR 🚀</div>
+                                        <div class="warrior-bubble">{{ paragraph }}</div>
+                                    </div>
+                                </div>
+                                
+                                {# Insert Mean Gene after every 2-3 paragraphs #}
+                                {% if loop.index % 2 == 0 and not loop.last %}
+                                    <div class="mean-gene-panel">
+                                        <div class="mean-gene-header">
+                                            <span class="comic-burst">⚡</span>
+                                            <span class="mean-gene-badge">MEAN GENE COSMIC UPDATE</span>
+                                            <span class="comic-burst">🚀</span>
+                                        </div>
+                                        <div class="mean-gene-content">
+                                            <strong>Incredible!</strong> The Warrior's energy is <strong>OFF THE CHARTS!</strong> I've never seen anything like this in all my years of broadcasting! The <strong>DESTRUCITY</strong> is real, folks!
+                                            <div class="mean-gene-signature">— Mean Gene 🎤</div>
+                                            <div class="speech-bubble-tail"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {# No split detected - use default comic panel styling #}
+                    <div class="promo-content">
+                        {% set paragraphs = promo_text.split('\n\n') %}
+                        {% for paragraph in paragraphs %}
+                            {% if paragraph.strip() %}
+                                <div class="promo-paragraph">
+                                    <div class="macho-panel">
+                                        <div class="macho-badge">🎤 HOUSTON EVENT MANIA</div>
+                                        <div class="macho-bubble">{{ paragraph }}</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="promo-content">No promo available</div>
+            {% endif %}
         </div>
         
         <!-- EVENTS SECTION -->
