@@ -7,6 +7,8 @@ from pathlib import Path
 import logging
 from typing import List, Optional
 
+logger = logging.getLogger(__name__)
+
 # Import premailer for inlining CSS styles for Gmail compatibility
 try:
     from premailer import transform
@@ -14,8 +16,6 @@ try:
 except ImportError:
     PREMAILER_AVAILABLE = False
     logger.warning("⚠️  Premailer not available - Gmail may not display styles correctly")
-
-logger = logging.getLogger(__name__)
 
 
 class EmailSMSAdapter(SMSPort):

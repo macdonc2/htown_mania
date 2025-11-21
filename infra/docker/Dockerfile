@@ -32,7 +32,8 @@ RUN uv pip install --system --no-cache \
     greenlet \
     pydantic \
     pydantic-ai \
-    pydantic-ai-slim[openai]
+    pydantic-ai-slim[openai] \
+    premailer
 
 # Copy application code
 COPY . .
