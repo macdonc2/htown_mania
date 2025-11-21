@@ -107,7 +107,14 @@ class EventService:
         
         await self.repository.save_events(prioritized)
         if not self.dev_sms_mute:
-            await self.sms.send_sms(self.sms_recipient, full_message)
+            # Pass events and promo for HTML email rendering
+            await self.sms.send_sms(
+                self.sms_recipient, 
+                full_message,
+                events=prioritized,
+                promo_text=summary,
+                scratchpad_text=""
+            )
         else:
             print("[DEV_SMS_MUTE=1] SMS would be sent to", self.sms_recipient)
             print(full_message)

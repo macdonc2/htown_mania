@@ -96,12 +96,19 @@ class AgenticEventService:
             await self.repository.save_events(events_to_save)
             print(f"💾 Saved {len(events_to_save)} events to repository")
         
-        # Send SMS (skip only in dry-run mode, NOT in no-db mode)
+        # Send SMS/Email (skip only in dry-run mode, NOT in no-db mode)
         if self.dry_run:
             print(f"🧪 [DRY RUN] Skipping SMS to {self.sms_recipient}")
         elif not self.dev_sms_mute:
-            await self.sms.send_sms(self.sms_recipient, full_message)
-            print(f"📱 SMS sent to {self.sms_recipient}")
+            # Pass events, promo, and scratchpad for HTML email rendering
+            await self.sms.send_sms(
+                self.sms_recipient, 
+                full_message,
+                events=events_to_save,
+                promo_text=promo_text,
+                scratchpad_text=scratchpad_text
+            )
+            print(f"📱 Email/SMS sent to {self.sms_recipient}")
         else:
             print(f"[DEV_SMS_MUTE=1] SMS would be sent to {self.sms_recipient}")
         

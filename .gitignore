@@ -80,8 +80,9 @@ secrets/
 # Audio files folder
 audio/
 
-# Vibe logs
-CHANGELOG.md
+# Test files
+test_email_template.py
+test_email_output.html
 
 
 

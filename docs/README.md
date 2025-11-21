@@ -17,6 +17,7 @@
 
 ### 🎤 Features
 - **[Wrestling TTS Guide](WRESTLING_TTS_GUIDE.md)** - Generate Macho Man & Ultimate Warrior voice promos
+- **[WrestleMania Email Design](EMAIL_WRESTLEMANIA.md)** - HTML email notifications with championship styling
 
 ### 📝 Reference
 - **[Changelog](CHANGELOG.md)** - Version history and release notes
