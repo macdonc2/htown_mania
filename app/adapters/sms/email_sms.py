@@ -7,6 +7,14 @@ from pathlib import Path
 import logging
 from typing import List, Optional
 
+# Import premailer for inlining CSS styles for Gmail compatibility
+try:
+    from premailer import transform
+    PREMAILER_AVAILABLE = True
+except ImportError:
+    PREMAILER_AVAILABLE = False
+    logger.warning("⚠️  Premailer not available - Gmail may not display styles correctly")
+
 logger = logging.getLogger(__name__)
 
 
@@ -59,6 +67,15 @@ class EmailSMSAdapter(SMSPort):
                         events=events or [],
                         scratchpad_text=scratchpad_text or ""
                     )
+                    
+                    # Inline CSS styles for Gmail compatibility
+                    if PREMAILER_AVAILABLE:
+                        try:
+                            html_content = transform(html_content)
+                            logger.info("✅ CSS styles inlined for Gmail compatibility")
+                        except Exception as inline_error:
+                            logger.warning(f"⚠️ CSS inlining failed: {inline_error}")
+                    
                     html_part = MIMEText(html_content, 'html', 'utf-8')
                     msg.attach(html_part)
                     logger.info("✅ HTML email rendered with WrestleMania template")

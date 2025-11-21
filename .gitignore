@@ -83,6 +83,8 @@ audio/
 # Test files
 test_email_template.py
 test_email_output.html
+test_email_output_inlined.html
+inline_styles.py
 
 
 
