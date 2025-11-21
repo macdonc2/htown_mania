@@ -1,228 +1,209 @@
-# Houston Event Mania - Documentation Index
+# 📚 Houston Event Mania - Documentation
 
-**Complete documentation for the Houston Event Mania multi-agent AI system.**
-
----
-
-## 🚀 Quick Start
-
-**New User?** Start here:
-1. [QUICK_START.md](./QUICK_START.md) - **⚡ Get running in 5 minutes!** (START HERE!)
-2. [DEEP_RESEARCH_USAGE.md](./DEEP_RESEARCH_USAGE.md) - Complete usage guide
-3. [SERPAPI_SETUP.md](./SERPAPI_SETUP.md) - Setup API keys
-4. [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Deploy to production
+**Complete documentation for the agentic event discovery and deep research system.**
 
 ---
 
-## 📚 Documentation Categories
+## 📖 Quick Navigation
 
-### 🎯 Usage & Operations
+### 🚀 Getting Started
+- **[Quick Start Guide](QUICK_START.md)** - Get up and running in 5 minutes
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Production deployment to Kubernetes
 
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [QUICK_START.md](./QUICK_START.md) | **⚡ Get running in 5 minutes!** | **New Users** |
-| [DEEP_RESEARCH_USAGE.md](./DEEP_RESEARCH_USAGE.md) | Complete usage guide with all flags | Everyone |
-| [AGENTIC_USAGE_GUIDE.md](./AGENTIC_USAGE_GUIDE.md) | Base agentic system usage | Everyone |
-| [AGENTIC_QUICK_REFERENCE.md](./AGENTIC_QUICK_REFERENCE.md) | Quick command reference | Everyone |
-| [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) | Production deployment (K8s, Docker) | DevOps |
-| [CHANGELOG.md](./CHANGELOG.md) | Version history and changes | Everyone |
+### 🤖 Core Systems
+- **[Agentic System](AGENTIC_SYSTEM.md)** - Multi-agent orchestration (REACT pattern, parallel execution, review swarm)
+- **[Deep Research](DEEP_RESEARCH.md)** - AI-powered event research (entity extraction, query generation, synthesis)
+- **[SerpAPI Setup](SERPAPI.md)** - Google Events & web search integration
 
-### 🏗️ Architecture & Design
+### 🎤 Features
+- **[Wrestling TTS Guide](WRESTLING_TTS_GUIDE.md)** - Generate Macho Man & Ultimate Warrior voice promos
 
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [DEEP_RESEARCH_AGENT_DESIGN.md](./DEEP_RESEARCH_AGENT_DESIGN.md) | Deep research system design | Developers |
-| [AGENTIC_ARCHITECTURE.md](./AGENTIC_ARCHITECTURE.md) | Base agentic architecture | Developers |
-| [AGENTIC_SYSTEM_OVERVIEW.md](./AGENTIC_SYSTEM_OVERVIEW.md) | System overview | Product/Tech Leads |
-
-### 🔧 Implementation Guides
-
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [DEEP_RESEARCH_IMPLEMENTATION_GUIDE.md](./DEEP_RESEARCH_IMPLEMENTATION_GUIDE.md) | How to build deep research | Developers |
-| [SERPAPI_SETUP.md](./SERPAPI_SETUP.md) | SerpAPI configuration | Everyone |
-| [SERPAPI_SOLUTION.md](./SERPAPI_SOLUTION.md) | SerpAPI technical details | Developers |
-
-### 📊 Diagrams
-
-| Diagram | Description | View |
-|---------|-------------|------|
-| [architecture_diagram.png](./architecture_diagram.png) | Full system architecture | High-level |
-| [deep_research_architecture.png](./deep_research_architecture.png) | Deep research agents | Research system |
-| [deep_research_flow.png](./deep_research_flow.png) | Research workflow | Process flow |
-| [process_flow_diagram.png](./process_flow_diagram.png) | Base agentic flow | Base system |
-| [AGENTIC_DIAGRAMS_README.md](./AGENTIC_DIAGRAMS_README.md) | How to generate diagrams | Maintainers |
-
-### 🎤 Special Features
-
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [WRESTLING_TTS_GUIDE.md](./WRESTLING_TTS_GUIDE.md) | Text-to-speech wrestling promos | Fun! |
+### 📝 Reference
+- **[Changelog](CHANGELOG.md)** - Version history and release notes
 
 ---
 
-## 🎯 Common Tasks
-
-### "I want to run the system locally"
-→ [DEEP_RESEARCH_USAGE.md](./DEEP_RESEARCH_USAGE.md)
-```bash
-uv run python -m app.workers.run_daily_job --deep-research --no-db
-```
-
-### "I want to understand the architecture"
-→ [DEEP_RESEARCH_AGENT_DESIGN.md](./DEEP_RESEARCH_AGENT_DESIGN.md) + [architecture_diagram.png](./architecture_diagram.png)
-
-### "I want to deploy to production"
-→ [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
-
-### "I want to add a new agent"
-→ [DEEP_RESEARCH_IMPLEMENTATION_GUIDE.md](./DEEP_RESEARCH_IMPLEMENTATION_GUIDE.md)
-
-### "I need API keys"
-→ [SERPAPI_SETUP.md](./SERPAPI_SETUP.md)
-
-### "I hit a rate limit"
-→ [DEEP_RESEARCH_USAGE.md#common-issues](./DEEP_RESEARCH_USAGE.md#common-issues)
-
----
-
-## 🏛️ System Architecture
-
-The Houston Event Mania system uses a **Hexagonal (Ports & Adapters)** architecture with a **multi-agent AI** orchestration layer:
+## 📁 Documentation Structure
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                     PLANNING AGENT                           │
-│            (Orchestrates REACT Loop)                         │
-└──────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-   SEARCHING              REVIEWING            RESEARCHING
-   
-   • SerpAPI              • Relevance          • Entity Extract
-   • Ticketmaster         • Date Check         • Query Gen
-   • Reddit (opt)         • Web Enrich         • Web Research
-                          • Content            • Synthesis
-        │                     │                     │
-        └─────────────────────┼─────────────────────┘
-                              ▼
-                       SYNTHESIZING
-                       
-                    • Promo Generator
-                    • Email/SMS
-                    • Database
+docs/
+├── README.md                          ← You are here
+├── QUICK_START.md                     ← Start here!
+├── DEPLOYMENT_GUIDE.md                ← Production deployment
+├── AGENTIC_SYSTEM.md                  ← Complete agentic guide
+├── DEEP_RESEARCH.md                   ← Deep research guide
+├── SERPAPI.md                         ← SerpAPI setup
+├── WRESTLING_TTS_GUIDE.md             ← Voice generation
+├── CHANGELOG.md                       ← Version history
+├── architecture_diagram.png           ← System architecture
+├── process_flow_diagram.png           ← Process flow
+├── deep_research_architecture.png     ← Research architecture
+└── deep_research_flow.png             ← Research flow
 ```
 
 ---
 
-## 🔬 Agent Types
+## 🎯 By Use Case
 
-### Core Agents
+### I want to...
 
-| Agent | Model | Purpose | Phase |
-|-------|-------|---------|-------|
-| Planning Agent | GPT-4o | Orchestrates workflow | All |
-| Promo Generator | GPT-4o | Generates wrestling promos | Synthesizing |
+**...get started quickly**
+→ [Quick Start Guide](QUICK_START.md)
 
-### Search Agents (Parallel)
+**...deploy to production**
+→ [Deployment Guide](DEPLOYMENT_GUIDE.md)
 
-| Agent | API | Events | Default |
-|-------|-----|--------|---------|
-| SerpAPI Events | SerpAPI | 10-15 | ✅ |
-| Ticketmaster | Ticketmaster | 10-15 | ✅ |
-| Reddit Events | Scraping | 100+ | ❌ (opt-in) |
+**...understand the agentic system**
+→ [Agentic System](AGENTIC_SYSTEM.md)
 
-### Review Agents (Parallel Swarm)
+**...enable deep research**
+→ [Deep Research](DEEP_RESEARCH.md)
 
-| Agent | Purpose | Model/API |
-|-------|---------|-----------|
-| Relevance Scorer | Check Houston relevance | Heuristics |
-| Date Verifier | Validate dates | Heuristics |
-| Web Search Enricher | Add context from web | SerpAPI + GPT |
-| Content Enricher | Enhance descriptions | GPT-4o |
+**...set up SerpAPI**
+→ [SerpAPI Setup](SERPAPI.md)
 
-### Research Agents (Deep Research)
+**...generate wrestling voices**
+→ [Wrestling TTS Guide](WRESTLING_TTS_GUIDE.md)
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| Entity Extractor | GPT-4o-mini | Extract artists, venues, etc |
-| Query Generator | GPT-4o-mini | Generate research queries |
-| Web Search Researcher | SerpAPI | Find facts via Google |
-| Knowledge Synthesizer | GPT-4o | Create narratives |
+**...see what's new**
+→ [Changelog](CHANGELOG.md)
 
 ---
 
-## 🎛️ Command Reference
+## 🏗️ Architecture Overview
 
-```bash
-# Basic modes
-uv run python -m app.workers.run_daily_job                    # Original
-uv run python -m app.workers.run_daily_job --agentic         # Multi-agent
-uv run python -m app.workers.run_daily_job --deep-research   # Full research
+### System Components
 
-# Testing flags
-uv run python -m app.workers.run_daily_job --deep-research --no-db     # Skip DB
-uv run python -m app.workers.run_daily_job --deep-research --dry-run   # Skip all
-uv run python -m app.workers.run_daily_job --deep-research --reddit    # Add Reddit
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    HOUSTON EVENT MANIA                       │
+│                  Multi-Agent System                         │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+        ┌───────────────┴───────────────┐
+        │   Planning Agent (REACT)      │
+        │   - Orchestrates workflow     │
+        │   - Maintains scratchpad      │
+        │   - Confidence scoring        │
+        └───────────────┬───────────────┘
+                        │
+    ┌───────────────────┴───────────────────┐
+    │                                       │
+┌───┴────┐                          ┌──────┴───────┐
+│ SEARCH │                          │    REVIEW    │
+│ AGENTS │                          │    SWARM     │
+│────────│                          │──────────────│
+│ Serp   │ ───(parallel)───→        │ Relevance    │
+│ Ticket │                          │ Date         │
+│        │                          │ WebSearch    │
+└───┬────┘                          │ Content      │
+    │                               └──────┬───────┘
+    │                                      │
+    └──────────────┬───────────────────────┘
+                   │
+           ┌───────┴────────┐
+           │    RESEARCH    │ (optional --deep-research)
+           │────────────────│
+           │ Entity Extract │
+           │ Query Generate │
+           │ Web Search     │
+           │ Synthesize     │
+           └───────┬────────┘
+                   │
+           ┌───────┴────────┐
+           │  SYNTHESIZE    │
+           │────────────────│
+           │ Promo Agent    │
+           │ (GPT-4o)       │
+           └───────┬────────┘
+                   │
+           ┌───────┴────────┐
+           │    NOTIFY      │
+           │────────────────│
+           │ Email/SMS      │
+           │ Database Save  │
+           └────────────────┘
 ```
 
----
+### Key Technologies
 
-## 📦 Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **AI/ML** | OpenAI GPT-4o, GPT-4o-mini, PydanticAI |
-| **APIs** | SerpAPI, Ticketmaster, NewsAPI |
-| **Backend** | Python 3.12, FastAPI, SQLAlchemy, Pydantic |
-| **Database** | PostgreSQL, Alembic migrations |
-| **Messaging** | Twilio SMS, Gmail SMTP |
-| **Orchestration** | asyncio, httpx |
-| **Infrastructure** | Docker, Kubernetes, Helm |
-| **Observability** | Structured logging, scratchpad traces |
+- **PydanticAI**: Agent orchestration framework
+- **GPT-4o**: LLM for reasoning and generation
+- **SerpAPI**: Google Events & web search
+- **PostgreSQL**: Event storage
+- **Kubernetes**: Production deployment
+- **Twilio/SMTP**: Notifications
 
 ---
 
-## 🧪 Testing Philosophy
+## 📊 Quick Stats
 
-- **Contract Tests**: Port interfaces
-- **Integration Tests**: Agent workflows
-- **Unit Tests**: Domain logic
-- **E2E Tests**: Full pipeline
+### Agentic System
+- **Agents**: 7 (1 planning, 2 search, 4 review)
+- **Pattern**: REACT (Thought → Action → Observation)
+- **Observations**: 100-150 per run
+- **Events**: 20-30 discovered, 15-25 verified
+- **Confidence**: 0.75-0.85 average
 
-See: [Test rules in user rules](../README.md)
-
----
-
-## 🔗 External Resources
-
-- [PydanticAI Docs](https://ai.pydantic.dev/)
-- [SerpAPI Docs](https://serpapi.com/docs)
-- [Ticketmaster API](https://developer.ticketmaster.com/)
-- [OpenAI API](https://platform.openai.com/docs)
+### Deep Research
+- **Research Agents**: 5 (extraction, generation, search, wikipedia, synthesis)
+- **Entities**: 80-100 per run
+- **Queries**: 2-3 per event (~50 total)
+- **Facts**: 250+ discovered
+- **API Calls**: ~75 (under 100/hour limit)
 
 ---
 
-## 📝 Contributing
+## 🔄 Recent Updates
 
-When adding documentation:
+**v2.0.9** - Deep Research System (Nov 2025)
+- ✅ Entity extraction & query generation
+- ✅ Music-aware research queries
+- ✅ Rate limit management (2-3 queries/event)
+- ✅ 28/28 tests passing
+- ✅ Production deployed
 
-1. **Usage guides** → `DEEP_RESEARCH_USAGE.md` or `AGENTIC_USAGE_GUIDE.md`
-2. **Architecture** → `DEEP_RESEARCH_AGENT_DESIGN.md` or `AGENTIC_ARCHITECTURE.md`
-3. **Implementation** → `DEEP_RESEARCH_IMPLEMENTATION_GUIDE.md`
-4. **Diagrams** → Use Mermaid (`.mmd` files), generate PNG with `mmdc`
-5. **Update this index** → Add new docs to the tables above
+See [Changelog](CHANGELOG.md) for full history.
 
 ---
 
-## 🎤 Final Word
+## 🆘 Getting Help
 
-**OHHH YEAHHH, BROTHER!** The cream rises to the top, and this documentation is CHAMPIONSHIP MATERIAL! 💪🔥
+### Common Issues
+
+**No events found?**
+→ Check [SerpAPI Setup](SERPAPI.md) and API keys
+
+**Rate limits hit?**
+→ See [Deep Research - Rate Limits](DEEP_RESEARCH.md#rate-limits)
+
+**Deployment failing?**
+→ Check [Deployment Guide - Troubleshooting](DEPLOYMENT_GUIDE.md#troubleshooting)
+
+**Promo not enriched?**
+→ Verify `--deep-research` flag and review [Deep Research Guide](DEEP_RESEARCH.md)
+
+### Support Channels
+
+- **Issues**: Open a GitHub issue
+- **Docs**: You're reading them!
+- **Logs**: Check Kubernetes logs or local output
+
+---
+
+## 🎤 About
+
+**Houston Event Mania** is a State-of-the-Art (SOTA) agentic system that:
+1. Discovers events from multiple sources
+2. Validates them through a 4-agent review swarm
+3. Optionally researches them with AI-powered queries
+4. Generates wrestling-style promos (Macho Man + Ultimate Warrior)
+5. Sends daily email/SMS notifications
+
+**Built with**: PydanticAI, GPT-4o, SerpAPI, FastAPI, PostgreSQL
+
+---
+
+**OHHH YEAHHH!** Your docs are **ORGANIZED**, BROTHER! 🎤📚
 
 **DIG IT!**
-
----
-
-*Last Updated: 2025-11-16*
-
