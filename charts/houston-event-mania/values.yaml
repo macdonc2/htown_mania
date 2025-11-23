@@ -1,7 +1,7 @@
 image:
   repository: htownmaniaacr.azurecr.io/houston-event-mania
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 envFromSecret: houston-event-mania-secrets
 ingress:
   enabled: true
