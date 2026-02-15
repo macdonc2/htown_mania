@@ -4,6 +4,10 @@
 
 set -e  # Exit on error
 
+# Configure Docker for better network stability
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+
 echo "=========================================="
 echo "🔬 HOUSTON EVENT MANIA - DEEP RESEARCH DEPLOYMENT"
 echo "=========================================="
@@ -47,13 +51,53 @@ docker build -f infra/docker/Dockerfile \
     .
 echo "✅ Image built successfully"
 
-# Step 4: Push to ACR
+# Verify image exists locally
+if ! docker images | grep -q "${IMAGE_NAME}.*${IMAGE_TAG}"; then
+    echo "❌ Image not found locally after build"
+    exit 1
+fi
+
+# Step 4: Push to ACR with retry logic
 echo ""
 echo "📤 Step 4: Pushing image to Azure Container Registry..."
-docker push ${ACR_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+echo "   Using retry logic for network stability..."
+
+# Function to retry docker push
+retry_push() {
+    local image=$1
+    local max_attempts=5
+    local attempt=1
+    local delay=10
+    
+    while [ $attempt -le $max_attempts ]; do
+        echo "   Attempt $attempt of $max_attempts for $image"
+        
+        if docker push "$image"; then
+            echo "   ✅ Successfully pushed $image"
+            return 0
+        else
+            if [ $attempt -lt $max_attempts ]; then
+                echo "   ⚠️  Push failed. Waiting ${delay}s before retry..."
+                sleep $delay
+                # Exponential backoff
+                delay=$((delay * 2))
+            fi
+        fi
+        
+        attempt=$((attempt + 1))
+    done
+    
+    echo "   ❌ Failed to push $image after $max_attempts attempts"
+    return 1
+}
+
+# Push with retry
+retry_push "${ACR_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}" || exit 1
+
 if [ "${IMAGE_TAG}" != "latest" ]; then
-    docker push ${ACR_REGISTRY}/${IMAGE_NAME}:latest
+    retry_push "${ACR_REGISTRY}/${IMAGE_NAME}:latest" || exit 1
 fi
+
 echo "✅ Image pushed successfully"
 
 # Step 5: Deploy to Kubernetes
