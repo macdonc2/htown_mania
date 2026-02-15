@@ -23,7 +23,7 @@ class KnowledgeSynthesisAgent(KnowledgeSynthesisPort):
         os.environ["OPENAI_API_KEY"] = openai_api_key
         
         self.agent = Agent(
-            model=OpenAIModel("gpt-5.2"),
+            model=OpenAIModel("gpt-5.2-2025-12-11"),
             system_prompt=self._get_system_prompt()
         )
     

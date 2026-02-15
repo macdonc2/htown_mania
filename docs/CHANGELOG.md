@@ -9,12 +9,15 @@ All notable changes to the Houston Event Mania project.
 ### 🏆 Major AI Model Upgrade
 
 #### Model Updates - Optimized for Performance & Cost
-- **GPT-5.2**: Planning Agent, Promo Generator, Knowledge Synthesis Agent (previously gpt-4o)
+- **gpt-5.2-2025-12-11**: Planning Agent, Promo Generator, Knowledge Synthesis Agent (previously gpt-4o)
   - Best-in-class reasoning for complex creative and orchestration tasks
-- **GPT-5-mini**: Query Generation Agent (previously gpt-4o-mini)
+  - Latest December 2025 release with enhanced reasoning capabilities
+- **gpt-5-mini-2025-08-07**: Query Generation Agent (previously gpt-4o-mini)
   - Balanced performance for structured creative tasks
-- **GPT-5-nano**: Entity Extraction, Review Agents (previously gpt-4o-mini)
+  - August 2025 release optimized for mid-complexity tasks
+- **gpt-5-nano-2025-08-07**: Entity Extraction, Review Agents (previously gpt-4o-mini)
   - Fastest, most cost-efficient for straightforward extraction and validation
+  - August 2025 release with 10x cost savings for high-volume simple tasks
 - **OpenAI Deprecation Response**: Proactively upgraded after OpenAI retired GPT-4o and older models from ChatGPT (February 13, 2026)
 
 #### Performance Benefits
@@ -24,16 +27,16 @@ All notable changes to the Houston Event Mania project.
 - **Cost Optimization**: GPT-5-nano provides 10x cost savings for high-volume simple tasks
 
 #### Files Updated
-- `app/config/settings.py`: Default model changed to `gpt-5-mini`
-- `app/adapters/agents/planning_agent.py`: Upgraded to `gpt-5.2`
-- `app/adapters/agents/promo_agent.py`: Upgraded to `gpt-5.2`
-- `app/adapters/agents/research/knowledge_synthesis_agent.py`: Upgraded to `gpt-5.2`
-- `app/adapters/agents/research/query_generation_agent.py`: Upgraded to `gpt-5-mini`
-- `app/adapters/agents/research/entity_extraction_agent.py`: Upgraded to `gpt-5-nano`
-- `app/adapters/agents/review_agents.py`: Upgraded to `gpt-5-nano`
-- `.env`: Updated default model to `gpt-5-mini`
+- `app/config/settings.py`: Default model changed to `gpt-5-mini-2025-08-07`
+- `app/adapters/agents/planning_agent.py`: Upgraded to `gpt-5.2-2025-12-11`
+- `app/adapters/agents/promo_agent.py`: Upgraded to `gpt-5.2-2025-12-11`
+- `app/adapters/agents/research/knowledge_synthesis_agent.py`: Upgraded to `gpt-5.2-2025-12-11`
+- `app/adapters/agents/research/query_generation_agent.py`: Upgraded to `gpt-5-mini-2025-08-07`
+- `app/adapters/agents/research/entity_extraction_agent.py`: Upgraded to `gpt-5-nano-2025-08-07`
+- `app/adapters/agents/review_agents.py`: Upgraded to `gpt-5-nano-2025-08-07`
+- `.env`: Updated default model to `gpt-5-mini-2025-08-07`
 - Documentation: Updated `README.md`, `env.template`, `QUICK_START.md`
-- Tests: Updated `test_agent_models.py` to reflect new model names
+- Tests: Updated `test_agent_models.py` to reflect new model versions
 
 #### References
 - OpenAI announced retirement of GPT-4o, GPT-4.1, GPT-4.1 mini, and o4-mini on February 13, 2026

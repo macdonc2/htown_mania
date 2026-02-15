@@ -11,7 +11,7 @@ from app.core.ports.research_port import EntityExtractionPort
 class EntityExtractionAgent(EntityExtractionPort):
     """
     Extracts entities (artists, venues, organizers, topics, genres) from events.
-    Uses GPT-5-nano for fast, cost-effective extraction.
+    Uses GPT-5-nano-2025-08-07 for fast, cost-effective extraction.
     """
     
     def __init__(self, openai_api_key: str):
@@ -19,7 +19,7 @@ class EntityExtractionAgent(EntityExtractionPort):
         os.environ["OPENAI_API_KEY"] = openai_api_key
         
         self.agent = Agent(
-            model=OpenAIModel("gpt-5-nano"),
+            model=OpenAIModel("gpt-5-nano-2025-08-07"),
             system_prompt=self._get_system_prompt()
         )
     

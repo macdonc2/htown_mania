@@ -10,9 +10,9 @@ from app.core.ports.research_port import QueryGenerationPort
 
 
 class QueryGenerationAgent(QueryGenerationPort):
-    """Agent that generates sophisticated, targeted research queries using GPT-5-mini."""
+    """Agent that generates sophisticated, targeted research queries using GPT-5-mini-2025-08-07."""
     
-    def __init__(self, openai_api_key: str, model: str = "gpt-5-mini"):
+    def __init__(self, openai_api_key: str, model: str = "gpt-5-mini-2025-08-07"):
         """Initialize the query generation agent."""
         import os
         os.environ["OPENAI_API_KEY"] = openai_api_key
