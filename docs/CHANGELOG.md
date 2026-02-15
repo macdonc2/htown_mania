@@ -8,16 +8,20 @@ All notable changes to the Houston Event Mania project.
 
 ### 🏆 Major AI Model Upgrade
 
-#### Model Updates
-- **Upgraded to GPT-5.2**: Planning Agent, Promo Generator, Knowledge Synthesis Agent now use GPT-5.2 (previously gpt-4o)
-- **Upgraded to GPT-5-mini**: Query Generation, Entity Extraction, Review Agents now use GPT-5-mini (previously gpt-4o-mini)
+#### Model Updates - Optimized for Performance & Cost
+- **GPT-5.2**: Planning Agent, Promo Generator, Knowledge Synthesis Agent (previously gpt-4o)
+  - Best-in-class reasoning for complex creative and orchestration tasks
+- **GPT-5-mini**: Query Generation Agent (previously gpt-4o-mini)
+  - Balanced performance for structured creative tasks
+- **GPT-5-nano**: Entity Extraction, Review Agents (previously gpt-4o-mini)
+  - Fastest, most cost-efficient for straightforward extraction and validation
 - **OpenAI Deprecation Response**: Proactively upgraded after OpenAI retired GPT-4o and older models from ChatGPT (February 13, 2026)
 
 #### Performance Benefits
 - **Improved Reasoning**: GPT-5.2 offers better complex reasoning, spreadsheet understanding, and tool calling
 - **Better Code Generation**: Enhanced code generation and vision capabilities
-- **Token Efficiency**: More efficient token usage and instruction following
-- **Cost Optimization**: GPT-5-mini provides better performance at similar pricing
+- **Token Efficiency**: More efficient token usage and instruction following across all models
+- **Cost Optimization**: GPT-5-nano provides 10x cost savings for high-volume simple tasks
 
 #### Files Updated
 - `app/config/settings.py`: Default model changed to `gpt-5-mini`
@@ -25,8 +29,8 @@ All notable changes to the Houston Event Mania project.
 - `app/adapters/agents/promo_agent.py`: Upgraded to `gpt-5.2`
 - `app/adapters/agents/research/knowledge_synthesis_agent.py`: Upgraded to `gpt-5.2`
 - `app/adapters/agents/research/query_generation_agent.py`: Upgraded to `gpt-5-mini`
-- `app/adapters/agents/research/entity_extraction_agent.py`: Upgraded to `gpt-5-mini`
-- `app/adapters/agents/review_agents.py`: Upgraded to `gpt-5-mini`
+- `app/adapters/agents/research/entity_extraction_agent.py`: Upgraded to `gpt-5-nano`
+- `app/adapters/agents/review_agents.py`: Upgraded to `gpt-5-nano`
 - `.env`: Updated default model to `gpt-5-mini`
 - Documentation: Updated `README.md`, `env.template`, `QUICK_START.md`
 - Tests: Updated `test_agent_models.py` to reflect new model names
