@@ -29,7 +29,7 @@ class WebSearchEnricherAgent(ReviewAgentPort):
         import os
         os.environ["OPENAI_API_KEY"] = openai_api_key
         self.llm_agent = Agent(
-            model=OpenAIModel("gpt-4o-mini"),
+            model=OpenAIModel("gpt-5-mini"),
             system_prompt=(
                 "You are an event information verifier. Given search results about an event, "
                 "extract and verify key details: venue, date/time, price, description. "
@@ -182,7 +182,7 @@ class ContentEnricherAgent(ReviewAgentPort):
     Uses LLM to extract and summarize key information.
     """
     
-    def __init__(self, openai_api_key: str, model: str = "gpt-4o-mini"):
+    def __init__(self, openai_api_key: str, model: str = "gpt-5-mini"):
         self.client = httpx.AsyncClient(timeout=10, follow_redirects=True)
         # PydanticAI OpenAIModel picks up API key from OPENAI_API_KEY env var
         # or pass it in the format: "openai:model_name"

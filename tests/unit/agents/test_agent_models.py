@@ -259,10 +259,10 @@ class TestPromoGenerationResult:
             promo_text="OH YEAH! The cream rises to the top!",
             events_included=["Event 1", "Event 2"],
             confidence=0.95,
-            generation_metadata={"model": "gpt-4o", "temperature": 0.9}
+            generation_metadata={"model": "gpt-5.2", "temperature": 0.9}
         )
         
         assert "OH YEAH" in result.promo_text
         assert len(result.events_included) == 2
-        assert result.generation_metadata["model"] == "gpt-4o"
+        assert result.generation_metadata["model"] == "gpt-5.2"
 

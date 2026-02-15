@@ -24,7 +24,7 @@ class PromoGeneratorAgent(PromoAgentPort):
     Uses the existing template and integrates planning context.
     """
     
-    def __init__(self, api_key: str, model: str = "gpt-4o", temperature: float = 0.9):
+    def __init__(self, api_key: str, model: str = "gpt-5.2", temperature: float = 0.9):
         # Set API key in environment for PydanticAI
         import os
         os.environ["OPENAI_API_KEY"] = api_key

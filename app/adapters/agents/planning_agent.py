@@ -54,7 +54,7 @@ class PlanningAgent(PlanningAgentPort):
         search_agents: List[SearchAgentPort],
         review_agents: List[ReviewAgentPort],
         promo_agent: PromoAgentPort,
-        model: str = "gpt-4o",
+        model: str = "gpt-5.2",
         # Deep research components (optional)
         entity_extractor = None,
         query_generator = None,

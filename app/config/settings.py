@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     )
 
     openai_api_key: str
-    openai_model: str = "gpt-4o-mini"
+    openai_model: str = "gpt-5-mini"
     openai_temperature: float = 1.1
     
     # Event API Keys (optional - fallback to scraping if not provided)
